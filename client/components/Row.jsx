@@ -10,7 +10,7 @@ const Row = (props) => {
   //console.log(cellElements)
 return (
   <div>
-    <h1>this is a Row</h1>
+    <h1>This is a Row</h1>
   </div>
 )
 }
