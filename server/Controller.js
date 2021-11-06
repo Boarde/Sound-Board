@@ -18,7 +18,7 @@ Controller.getAllClips = (req, res, next) => {
         message: {err: 'Controller.getAllClips: Error'}
       });
     });
-  }
+  };
 
 Controller.getPokemon = (req, res, next) => {
   const qString =  'SELECT pokemon.name, pokemon.link FROM pokemon';
@@ -27,7 +27,7 @@ Controller.getPokemon = (req, res, next) => {
     //grabbing characters from the DB
     .then(data => {
       console.log(data.rows);
-      res.locals.allClips = data;
+      res.locals.pokemon = data;
       return next();
     })
     .catch(err => {
@@ -37,7 +37,7 @@ Controller.getPokemon = (req, res, next) => {
         message: {err: 'Controller.getPokemon: Error'}
       });
     });
-  }
+  };
 
 Controller.getInstruments = (req, res, next) => {
   const qString =  'SELECT instruments.name, instruments.link FROM instruments';
@@ -46,7 +46,7 @@ Controller.getInstruments = (req, res, next) => {
     //grabbing characters from the DB
     .then(data => {
       console.log(data.rows);
-      res.locals.allClips = data;
+      res.locals.instruments = data;
       return next();
     })
     .catch(err => {
@@ -65,7 +65,7 @@ Controller.getGaffes = (req, res, next) => {
     //grabbing characters from the DB
     .then(data => {
       console.log(data.rows);
-      res.locals.allClips = data;
+      res.locals.gaffes = data;
       return next();
     })
     .catch(err => {
@@ -75,7 +75,7 @@ Controller.getGaffes = (req, res, next) => {
         message: {err: 'Controller.getGaffes: Error'}
       });
     });
-  }
+  };
 
 // Controller.addCustom = (req, res, next) => {  
 //   const clips = [];
