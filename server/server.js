@@ -16,18 +16,25 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname + '/index.html'));
 });
 
-app.get('/all', Controller.getAllClips, (req, res) => {
-  console.log('getting all');
-  return res.status(200).json(res.locals.allClips);
+app.get('/all', Controller.getPokemon, Controller.getInstruments, Controller.getGaffes, (req, res) => {
+  console.log('getting all the things');
+  
+  return res.status(200).json({pokemon: res.locals.pokemon, instruments : res.locals.instruments, gaffes: res.locals.gaffes});
+
+
+  //res.locals.all = [ {name: 'name1', link: 'link1.wav'}, {name: 'name2', link: 'link2.wav'} ]
+});
+
+
+app.get('/presets', Controller.getPresets, (req, res) => {
+  console.log('got list of presets');
+  return res.status(200).json(res.locals.presets);
 });
 
 app.use('*', (req,res) => {
   console.log("not found");
   return res.sendStatus(404);
 });
-
-
-
 
 
 app.listen(PORT); //listens on port 3000 -> http://localhost:3000/
