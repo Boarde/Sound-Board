@@ -26,7 +26,6 @@ Controller.getInstruments = (req, res, next) => {
   const qString =  'SELECT instruments.name, instruments.link FROM instruments';
 
   db.query(qString)
-    //grabbing characters from the DB
     .then(data => {
       res.locals.intruments = data.rows;
       return next();
@@ -44,7 +43,6 @@ Controller.getGaffes = (req, res, next) => {
   const qString =  'SELECT gaffes.name, gaffes.link FROM gaffes';
 
   db.query(qString)
-    //grabbing characters from the DB
     .then(data => {
       res.locals.gaffes = data.rows;
       return next();
@@ -59,12 +57,11 @@ Controller.getGaffes = (req, res, next) => {
 };
 
 Controller.getPresets = (req, res, next) => {
-  const qString =  'SELECT presets.presetname, presets.list FROM presets';
+  const qString =  'SELECT * FROM presets';
 
   db.query(qString)
-    //grabbing characters from the DB
     .then(data => {
-      res.locals.gaffes = data.rows;
+      res.locals.presets = data.rows; 
       return next();
     })
     .catch(err => {
@@ -76,23 +73,23 @@ Controller.getPresets = (req, res, next) => {
     });
 };
 
-// Controller.sendNewPresets = (req, res, next) => {
-//   const qString = '';
-//   db.query(qString)
-//     //grabbing characters from the DB
-//     .then(data => 
+Controller.savePreset = (req, res, next) => {
+  const arr = ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
+  let qString =  'INSERT INTO presets(presetname, list) VALUE (';
+  qString += `'${arr.shift()}','`;
+  qString = qString + arr.join('#') + ')';
 
-//       return next();
-//     })
-//     .catch(err => {
-//       console.log("ERROR!!!");
-//       return next({
-//         log: 'Error in Controller.getGaffes',
-//         message: {err: 'Controller.getGaffes: Error'}
-//       });
-//     });
-// };
-
-
+  db.query(qString)
+    .then(data => {
+      return next();
+    })
+    .catch(err => {
+      console.log("ERROR!!!");
+      return next({
+        log: 'Error in Controller.getGaffes',
+        message: {err: 'Controller.getGaffes: Error'}
+      });
+    });
+};
 
 module.exports = Controller;
