@@ -1,7 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
 const Customizer = (props) => {
+  const [newPreset, setNewPreset] = useState({
+    0:"boop",
+    1:"boop",
+    2:"boop",
+    3:"boop",
+    4:"boop",
+    5:"boop",
+    6:"boop",
+    7:"boop",
+    8:"boop",
+    9:"boop",
+    10:"boop",
+    11:"boop",
+    });
+  const [presetName, setPresetName] = useState('');
 
+  let databaseEntry = "";
+
+//SHIT TROLL
   const currentSounds = [];
   const soundsArray = () => {
     Object.keys(props.allSounds).forEach(element => {
@@ -16,20 +34,21 @@ const Customizer = (props) => {
   soundsArray();
   //console.log(currentSounds)
   const formElements = currentSounds.map((element, i) => (
-    <option key={i} value={element}> { element } </option>
+    <option key={`${i}`} value={element}> { element } </option>
   ));
-    console.log('FORM ELEMENTS ', formElements);
+
 
 
   // POST FETCH REQUEST
   const addPreset = () => {
-    
-    fetch('/', {
+    databaseEntry = [presetName, ...Object.values(newPreset)];
+    console.log('databaseentry',databaseEntry);
+    fetch('/savePreset', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      }
-      // body: {
+      },
+      body: JSON.stringify({ newPreset: [presetName, ...Object.values(newPreset)]})
         
       // }
     })
@@ -41,46 +60,31 @@ const Customizer = (props) => {
 
   }
 
+  function handleChange(i, e) {
+
+    const selectedPreset = JSON.parse(JSON.stringify(newPreset));
+    selectedPreset[i] = e.target.value;
+    setNewPreset(selectedPreset);
+  };
+
+
+
   const presetOptions = [];
   for (let i = 0; i < 12; i++) {
     presetOptions.push(
-      <select id={`${i}dropdown`} name="soundClips">
+      <select onChange={ e => handleChange(i, e) } id={`${i}dropdown`} name="soundClips">
         { formElements }
       </select>
     )
   }
-  const preset = [
-    {
-      "presetname": "chang",
-      "list": "pikachu#why_are_you_running#triangle#bulbasaur#recorder#vulpix#fbi#ash_boogy#hellno#wow"
-    },
-    {
-      "presetname": "eddy",
-      "list": "why_are_you_running#machoke#triangle#meowth#you_what#ratchet#angklung#raichu#csgo#wahwahwah#bulbasaur#organ"
-    }
-  ]
-
-  // parse list:
-  const listOfPresets = [];
-  preset.forEach(el => {
-    listOfPresets.push([el.presetname, ...el.list.split("#")])
-  });
-
-  // list.splist 
-  // preset.list.split('#');
-  // this.state = {
-  //  currentPreset = preset.presetname;
-  //  currentList = preset.list;
-
-  // [name, soundName1, soundName2...]
   
   return (
-    <form onSubmit={ (e) => { 
+    <form onSubmit={ (e) => {
       e.preventDefault();
-      console.log('FORM SUBMITTED', e) 
+      addPreset();
     }}>
       <label htmlFor="preset-name" style={{color: "white"}}>Preset Name:     </label>
-      <input id="preset-name" type="text" required></input>
+      <input onChange={ (e) => setPresetName(e.target.value) } id="preset-name" type="text" required></input>
       { presetOptions }
       <input type="submit"></input>
     </form>
