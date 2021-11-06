@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Board from './components/Board.jsx';
+import Settings from './components/Settings.jsx';
+import './stylesheets/styles.scss';
 
 
 function App (){
@@ -28,6 +30,7 @@ function App (){
 
   return (
     //load user settings and render the board
+    <Settings />
     <Board />
   )
 

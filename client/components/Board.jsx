@@ -4,6 +4,10 @@ import SoundButton from './SoundButton.jsx';
 const Board = (props) => {
   const allSoundButtons = [];
 
+  // TESTING BUTTON RENDERING
+  for (let i = 0; i < 9; i++) {
+    allSoundButtons.push(<SoundButton />)
+  }
   // for (let sound of props.sound) {
   //   allSoundButtons.push(
   //     <SoundButton sound={sound} />
@@ -13,7 +17,9 @@ const Board = (props) => {
 
   // return row components
   return (
-    <SoundButton />
+    <div className="board-wrapper">
+      { allSoundButtons }
+    </div>
   )
 }
 
