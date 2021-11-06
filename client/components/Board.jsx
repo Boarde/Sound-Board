@@ -17,7 +17,7 @@ const Board = (props) => {
 
   // return row components
   return (
-    <div className="button-wrapper">
+    <div className="board-wrapper">
       { allSoundButtons }
     </div>
   )
