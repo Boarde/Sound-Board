@@ -16,9 +16,12 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname + '/index.html'));
 });
 
-app.get('/all', Controller.getAllClips, (req, res) => {
-  console.log('getting all');
-  return res.status(200).json(res.locals.allClips);
+app.get('/all', Controller.getPokemon, Controller.getInstruments, Controller.getGaffes, (req, res) => {
+  console.log('getting all the things');
+  console.log({pokemon: res.locals.pokemon, instruments : res.locals.instruments, gaffes: res.locals.gaffes});
+  return res.status(200).json(res.locals.gaffes);
+
+  //res.locals.all = [ {name: 'name1', link: 'link1.wav'}, {name: 'name2', link: 'link2.wav'} ]
 });
 
 app.use('*', (req,res) => {
