@@ -18,8 +18,9 @@ app.get('/', (req, res) => {
 
 app.get('/all', Controller.getPokemon, Controller.getInstruments, Controller.getGaffes, (req, res) => {
   console.log('getting all the things');
-  console.log({pokemon: res.locals.pokemon, instruments : res.locals.instruments, gaffes: res.locals.gaffes});
-  return res.status(200).json(res.locals.gaffes);
+  
+  console.log({pokemon: res.locals.pokemon.rows, instruments : res.locals.instruments.rows, gaffes: res.locals.gaffes.rows});
+  return res.status(200).json({pokemon: res.locals.pokemon.rows, instruments : res.locals.instruments.rows, gaffes: res.locals.gaffes.rows});
 
   //res.locals.all = [ {name: 'name1', link: 'link1.wav'}, {name: 'name2', link: 'link2.wav'} ]
 });
