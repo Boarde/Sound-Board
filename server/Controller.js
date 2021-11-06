@@ -8,6 +8,8 @@ Controller.getPokemon = (req, res, next) => {
   db.query(qString)
     //grabbing characters from the DB
     .then(data => {
+
+      //console.log(data.rows);
       res.locals.pokemon = data.rows;
       return next();
     })
@@ -26,7 +28,7 @@ Controller.getInstruments = (req, res, next) => {
   db.query(qString)
     //grabbing characters from the DB
     .then(data => {
-      res.locals.instruments = data.rows;
+      res.locals.intruments = data.rows;
       return next();
     })
     .catch(err => {
@@ -62,7 +64,7 @@ Controller.getPresets = (req, res, next) => {
   db.query(qString)
     //grabbing characters from the DB
     .then(data => {
-      res.locals.presets = data.rows;
+      res.locals.gaffes = data.rows;
       return next();
     })
     .catch(err => {
