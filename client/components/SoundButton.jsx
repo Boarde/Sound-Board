@@ -3,11 +3,10 @@ import React, { useState, useEffect } from 'react';
 const SoundButton = (props) => {
   // console.log('SOUNDBUTTON RENDERED, CHECKING PROPS: ', props)
 
-  const playSound = () => {
-    console.log("CLICKED");
-    let audio = new Audio(props.sound.link);
-    console.log("AUDIO LINK: ", props.sound.link);
-    audio.play()
+  let audio = new Audio("/christmas.mp3");
+
+  const start = () => {
+    audio.play();
   }
     //inside of onClick do something with event handler
     //this.props.onClick()
