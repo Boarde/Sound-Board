@@ -16,3 +16,37 @@ h1 {
 button {
   font-family: 'Quantico', 'Press Start 2P', 'Poppins', Arial, Helvetica, sans-serif;
 }
+
+.app-container {
+  height: 900px;
+  width: 900px;
+}
+.board-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px,1fr)) ;
+  align-items: flex-end;
+  justify-content: space-between;
+
+}
+.soundButtonWrapper {
+  padding: 10px;
+  margin-top: 50px;
+  width: 30%;
+  background-color: rgb(51, 50, 51);
+}
+
+button {
+  background-color: transparent;
+  padding: 30px 10px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+
+  transition-duration: 300ms;
+}
+
+button:hover {
+  background-color: rgb(228, 88, 186);
+  box-shadow: 0px 0px 4px 5px rgb(255, 238, 0);
+  color: white;
+}

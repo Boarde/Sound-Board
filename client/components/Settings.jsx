@@ -16,4 +16,4 @@ const Settings = () => {
   )
 }
 
-modules.export = Settings;
+export default Settings;

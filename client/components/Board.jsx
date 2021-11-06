@@ -3,10 +3,11 @@ import SoundButton from './SoundButton.jsx';
 
 const Board = (props) => {
   const allSoundButtons = [];
+  const sounds = props.allSounds;
 
   // TESTING BUTTON RENDERING
-  for (let i = 0; i < 9; i++) {
-    allSoundButtons.push(<SoundButton />)
+  for (let i = 0; i < 10; i++) {
+    allSoundButtons.push(<SoundButton sound={ sounds[i] } />)
   }
   // for (let sound of props.sound) {
   //   allSoundButtons.push(
