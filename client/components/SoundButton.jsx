@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 const SoundButton = (props) => {
   // console.log('SOUNDBUTTON RENDERED, CHECKING PROPS: ', props)
-  let audio = new Audio();
 
   const start = () => {
     console.log("CLICKED");
+    let audio = new Audio(props.sound.link);
     console.log("AUDIO LINK: ", props.sound.link);
     audio.play()
   }
