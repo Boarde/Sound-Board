@@ -13,7 +13,7 @@ app.use(express.json());
 //getting homepage
 app.get('/', (req, res) => {
   console.log("server - root");
-  return res.status(200).sendFile(path.resolve(__dirname + './index.html'));
+  return res.status(200).sendFile(path.resolve(__dirname + '/index.html'));
 });
 
 app.use('*', (req,res) => {
