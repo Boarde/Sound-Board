@@ -5,7 +5,7 @@ const SoundButton = (props) => {
   let audio = new Audio("/christmas.mp3")
 
   const start = () => {
-    audio.play()
+    audio.play();
   }
     //inside of onClick do something with event handler
     //this.props.onClick()
