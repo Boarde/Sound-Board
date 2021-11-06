@@ -7,7 +7,7 @@ import './stylesheets/styles.scss';
 function App() {
   // const [state, setState] = useState(initialState);
   const [allSounds, setAllSounds] = useState([]);
-  const [preset, setPreset] = useState(""); // initialize to pokemon
+  const [preset, setPreset] = useState('pokemon'); // initialize to pokemon
   const [defaultPresets] = useState([
     'pokemon',
     'instruments',
@@ -35,8 +35,8 @@ function App() {
     })
       .then(res => res.json())
       .then(data => {
-        console.log('This is our data =>', data.rows);
-        setAllSounds(data.rows);
+        console.log('This is our data =>', data);
+        setAllSounds(data);
       })
       .catch(err => {
         console.log("Error fetching request from back end");

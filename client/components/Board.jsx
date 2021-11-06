@@ -3,37 +3,23 @@ import SoundButton from './SoundButton.jsx';
 
 const Board = (props) => {
   const allSoundButtons = [];
-  const sounds = props.allSounds;
   const preset = props.preset;
+  const sounds = props.allSounds[preset];
+  console.log('THIS IS THE SOUND FROM PRESET, ', sounds);
+  const defaultSound = 'https://www.myinstants.com/media/sounds/overwatch-boop-sombra.mp3';
 
   // CONDITIONAL LOGIC TO CHANGE BUTTONS RENDERED DEPENDING ON PRESET
   // PRESET CHANGES HAPPEN IN SETTINGS.JSX
   
   // TESTING BUTTON RENDERING
-  for (let i = 0; i < 12; i++) {
-    if (sounds[i] !== undefined) {
-      allSoundButtons.push(<SoundButton id={i} key={i} sound={ sounds[i] } />)
-    } else {
-      // allSoundButtons.push(<SoundButton id={i} key={i} sound={  } />)
-    }
-  }
-  // for (let sound of props.sound) {
-  //   allSoundButtons.push(
-  //     <SoundButton sound={sound} />
-  //   )
+  // for (let i = 0; i < sounds; i++) {
+  //   if (sounds[i] !== undefined) {
+  //     allSoundButtons.push(<SoundButton id={i} key={i} sound={ sounds[i].link } />)
+  //   } else {
+  //     // allSoundButtons.push(<SoundButton id={i} key={i} sound={  } />)
+  //   }
   // }
-
-  /**
-   * this.state = {
-   *  choices = [pikachu, blah, blah, blah]
-   * }
-   * 
-   * changeChoices (
-   * ) -> grab
-   * 
-   */
-
-  // return row components
+ 
   return (
     <div className="board">
       { allSoundButtons }
