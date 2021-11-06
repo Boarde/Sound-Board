@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const SoundButton = (props) => {
   // console.log('SOUNDBUTTON RENDERED, CHECKING PROPS: ', props)
 
-  const start = () => {
+  const playSound = () => {
     console.log("CLICKED");
     let audio = new Audio(props.sound.link);
     console.log("AUDIO LINK: ", props.sound.link);
@@ -12,10 +12,10 @@ const SoundButton = (props) => {
     //inside of onClick do something with event handler
     //this.props.onClick()
     return (
-      <div className="soundButtonWrapper">
+      <div className="button-wrapper">
         <button
-        className="square"
-        onClick={() => start()}
+        className="button-area"
+        onClick={() => playSound()}
         >
         CLICK ME
         </button>
