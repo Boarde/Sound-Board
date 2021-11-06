@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const soundButton = (props) => {
+const SoundButton = (props) => {
 
   let audio = new Audio("/christmas.mp3")
 
@@ -12,9 +12,11 @@ const soundButton = (props) => {
     return (
         <button
         className="square"
-        onClick={() => /* play props.sound function */}>
-        {/* {this.props.value} */}
+        >
+          CLICK ME
         </button>
+        // onClick={() => /* play props.sound function */}>
+        // {/* {this.props.value} */}
     )
 }
 

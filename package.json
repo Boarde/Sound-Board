@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/server.js",
     "build": "webpack",
-    "dev": "webpack serve --open",
+    "dev": "export NODE_ENV=development; webpack serve --open & nodemon server/server.js",
     "gulp-prod": "node_modules/.bin/gulp prod",
     "gulp-dev": "node_modules/.bin/gulp dev"
   },
