@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
 const Settings = (props) => {
+  console.log('SETTINGS PROPS', props.defaultPresets);
 
-  // please implement preset clips in this format; 
-  // clips = [name, preset1..., preset9];
+  // POPULATING OPTIONS DROPDOWN
+  const options = props.defaultPresets.map((preset, i) => {
+    return <option key={ i }> { preset } </option>
+  });
   
   return (
     <div className="settings-wrapper">
-      <select onChange={e => props.setPreset(e.value) }>
-        { props.defaultPresets.map((preset) => {
-          <option value={ preset }>{ preset }</option>
-        }) }
+      <select onChange={e => props.setPreset(e.target.value) }>
+        { options }
       </select>
     </div>
   )

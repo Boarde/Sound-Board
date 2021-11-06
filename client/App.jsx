@@ -11,7 +11,7 @@ function App() {
   const [defaultPresets] = useState([
     'pokemon',
     'instruments',
-    'gaffe'
+    'gaffes'
   ]);
   
   // tables = ['all','/pokemon', '/instruments', '/gaffes']
