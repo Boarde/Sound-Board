@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Board from './components/Board.jsx';
+import './stylesheets/styles.scss';
 
 
 function App (){
