@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Board from './components/Board.jsx';
 import Settings from './components/Settings.jsx';
+import Customizer from './components/Customizer.jsx'
 import './stylesheets/styles.scss';
 
 
@@ -14,19 +15,8 @@ function App() {
     'gaffes'
   ]);
   
-  // tables = ['all','/pokemon', '/instruments', '/gaffes']
-  // /all route => grabbing all the presets just "cache"
-  // subsequent routes just gives you a list of names under each category
-  // this.state{
-  //  all:{name: links}
-  // pokemon : [pikachu,charmander...]
-  // instruments : [drum...]
-  // gaffes: [wahwah...]
-  //}
-
   // useEffect is like componentDidMount componentDidUnmount
   useEffect(() => {
-    //tables.forEach(table => {
     fetch('/all', {
       method: 'GET',
       headers: {
@@ -50,7 +40,12 @@ function App() {
     <div className="app-wrapper">
       <Settings defaultPresets={ defaultPresets } setPreset={ setPreset } />
       <Board preset={ preset } allSounds={ allSounds } />
+      <Customizer allSounds={ allSounds } />
     </div>
+    //customizer will go here
+    //<div className="customizer">
+    // <Customizer allSounds= {allSounds}>
+    // </div>
   )
 
 }
