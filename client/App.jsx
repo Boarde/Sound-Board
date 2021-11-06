@@ -30,7 +30,7 @@ function App() {
     fetch('/all', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }
     })
       .then(res => res.json())
