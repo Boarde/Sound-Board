@@ -12,7 +12,7 @@ const SoundButton = (props) => {
     //inside of onClick do something with event handler
     //this.props.onClick()
     return (
-      <div className="sound-button-wrapper">
+      <div className="soundButtonWrapper">
         <button
         className="square"
         onClick={() => start()}
