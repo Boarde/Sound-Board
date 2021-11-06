@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Press+Start+2P&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/*
+FONT NAMES
+FEEL FREE TO ADD OR MODIFY
+font-family: 'Poppins', sans-serif; // CLEAN ROUND MINIMALISTIC
+font-family: 'Press Start 2P', cursive; // VIEO GAME STYLE PIXELATED TEXT 
+font-family: 'Quantico', sans-serif; // NO ROUND CORNERS FONT
+*/
+
+h1 {
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
+button {
+  font-family: 'Quantico', 'Press Start 2P', 'Poppins', Arial, Helvetica, sans-serif;
+}
+//attempt to make grid layout in a different way
+
+// .board {
+//   display: grid;
+//   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+//   grid-gap: 1rem;
+//   > .button-wrapper {
+//     background: black;
+//     padding: 1rem;
+//     position: relative;
+//     &::before {
+//       // for apsect ratio
+//       content: "";
+//       display: block;
+//       padding-bottom: 100%;
+//     }
+//     .button-area {
+//       position: absolute;
+//       max-width: 100%;
+
+//       // Alternate Version
+//       // top: 0;
+//       // bottom: 0;
+//       // right: 0;
+//       // left: 0;
+//       // margin: auto;
+
+//       top: 50%;
+//       left: 50%;
+//       transform: translate(-50%, -50%);
+//     }
+//   }
+// }
+
+.app-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 1rem;
+}
+
+.settings-wrapper{
+  background-color: grey;
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 1rem;
+}
+.button-wrapper {
+  padding: 10px;
+  margin-top: 50px;
+  width: 30%;
+  background-color: rgb(51, 50, 51);
+  border-radius: 12px;
+}
+
+.button-area{
+  background-color: red;
+}
+
+button {
+  background-color: transparent;
+  padding: 30px 10px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  transition-duration: 300ms;
+}
+
+button:hover {
+  background-color: rgb(228, 88, 186);
+  box-shadow: 0px 0px 4px 5px rgb(255, 238, 0);
+  color: white;
+}
