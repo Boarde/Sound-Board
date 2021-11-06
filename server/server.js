@@ -18,11 +18,8 @@ app.get('/', (req, res) => {
 
 app.get('/all', Controller.getPokemon, Controller.getInstruments, Controller.getGaffes, (req, res) => {
   console.log('getting all the things');
-  
+
   return res.status(200).json({pokemon: res.locals.pokemon, instruments : res.locals.instruments, gaffes: res.locals.gaffes});
-
-
-  //res.locals.all = [ {name: 'name1', link: 'link1.wav'}, {name: 'name2', link: 'link2.wav'} ]
 });
 
 
@@ -30,6 +27,12 @@ app.get('/presets', Controller.getPresets, (req, res) => {
   console.log('got list of presets');
   return res.status(200).json(res.locals.presets);
 });
+
+app.post('/savePreset', Controller.savePreset, (req, res) => {
+  console.log('sent preset to db');
+  return res.sendStatus(200);
+});
+
 
 app.use('*', (req,res) => {
   console.log("not found");
