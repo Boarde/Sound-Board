@@ -7,7 +7,7 @@ Controller.getAllClips = (req, res, next) => {
   db.query(qString)
     //grabbing characters from the DB
     .then(data => {
-      console.log(data.rows);
+      //console.log(data.rows);
       res.locals.allClips = data;
       return next();
     })
@@ -26,7 +26,6 @@ Controller.getPokemon = (req, res, next) => {
   db.query(qString)
     //grabbing characters from the DB
     .then(data => {
-      console.log(data.rows);
       res.locals.pokemon = data;
       return next();
     })
@@ -45,7 +44,6 @@ Controller.getInstruments = (req, res, next) => {
   db.query(qString)
     //grabbing characters from the DB
     .then(data => {
-      console.log(data.rows);
       res.locals.instruments = data;
       return next();
     })
@@ -64,7 +62,6 @@ Controller.getGaffes = (req, res, next) => {
   db.query(qString)
     //grabbing characters from the DB
     .then(data => {
-      console.log(data.rows);
       res.locals.gaffes = data;
       return next();
     })
