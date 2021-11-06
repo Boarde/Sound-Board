@@ -18,7 +18,6 @@ const SoundButton = (props) => {
         className="button-area"
         onClick={() => playSound()}
         >
-        CLICK ME
         </button>
       </div>
         // onClick={() => /* play props.sound function */}>
