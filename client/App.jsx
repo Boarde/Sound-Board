@@ -4,33 +4,52 @@ import Settings from './components/Settings.jsx';
 import './stylesheets/styles.scss';
 
 
-function App (){
+function App() {
+  // const [state, setState] = useState(initialState);
   const [allSounds, setAllSounds] = useState([]);
+  const [preset, setPreset] = useState(""); // initialize to pokemon
+  const [defaultPresets] = useState([
+    'pokemon',
+    'instruments',
+    'gaffe'
+  ]);
+  
+  // tables = ['all','/pokemon', '/instruments', '/gaffes']
+  // /all route => grabbing all the presets just "cache"
+  // subsequent routes just gives you a list of names under each category
+  // this.state{
+  //  all:{name: links}
+  // pokemon : [pikachu,charmander...]
+  // instruments : [drum...]
+  // gaffes: [wahwah...]
+  //}
+
   // useEffect is like componentDidMount componentDidUnmount
   useEffect(() => {
-      fetch('/all', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        }
+    //tables.forEach(table => {
+    fetch('/all', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('This is our data =>', data.rows);
+        setAllSounds(data.rows);
       })
-        .then(res => res.json())
-        .then(data => {
-          console.log('This is our data =>', data.rows);
-          setAllSounds(data.rows);
-        })
-        .catch(err => {
-          console.log("Error fetching request from back end");
-        });
+      .catch(err => {
+        console.log("Error fetching request from back end");
+      });
   }, []);
 
 
 
   return (
     //load user settings and render the board
-    <div className="app-container">
-      <Settings />
-      <Board allSounds={ allSounds } />
+    <div className="app-wrapper">
+      <Settings defaultPresets={ defaultPresets } setPreset={ setPreset } />
+      <Board preset={ preset } allSounds={ allSounds } />
     </div>
   )
 
