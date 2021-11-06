@@ -6,7 +6,7 @@ import './stylesheets/styles.scss';
 
 function App (){
   const [allSounds, setAllSounds] = useState([]);
-  // useEffect is like componentDidMount
+  // useEffect is like componentDidMount componentDidUnmount
   useEffect(() => {
       //fetch request to backend
       // async () => {
