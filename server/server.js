@@ -16,6 +16,11 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname + '/index.html'));
 });
 
+app.get('/all', Controller.getAllClips, (req, res) => {
+  console.log('getting all');
+  return res.status(200).json(res.locals.allClips);
+});
+
 app.use('*', (req,res) => {
   console.log("not found");
   return res.sendStatus(404);

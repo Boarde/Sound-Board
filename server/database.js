@@ -1,12 +1,10 @@
 const { Pool } = require('pg');
 
-const PG_URI = 'postgres://bgcqqvdx:m4pLAzVZZe1_g3-2laSDaHgCfohG7A7j@fanny.db.elephantsql.com/bgcqqvdx';
-
+const PG_URI = 'postgres://fbhhtjnu:7nX6UUwB6gHXtEweTcwOjYXX2bm4ZtEW@fanny.db.elephantsql.com/fbhhtjnu';
 
 const pool = new Pool({
   connectionString: PG_URI
 });
-
 
 // Adding some notes about the database here will be helpful for future you or other developers.
 // Schema for the database can be found below:
