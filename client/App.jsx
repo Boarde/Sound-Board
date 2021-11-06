@@ -30,8 +30,10 @@ function App (){
 
   return (
     //load user settings and render the board
-    <Settings />
-    <Board />
+    <div className="app-container">
+      <Settings />
+      <Board />
+    </div>
   )
 
 }
