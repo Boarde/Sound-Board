@@ -39,7 +39,7 @@ function App() {
         setAllSounds(data.rows);
       })
       .catch(err => {
-        console.log("Error fetching request from back end");
+        console.log("Error fetching request from back end", err);
       });
   }, []);
 
