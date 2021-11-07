@@ -28,7 +28,7 @@ Controller.getInstruments = (req, res, next) => {
   db.query(qString)
     //grabbing characters from the DB
     .then(data => {
-      res.locals.intruments = data.rows;
+      res.locals.instruments = data.rows;
       return next();
     })
     .catch(err => {
@@ -46,6 +46,7 @@ Controller.getGaffes = (req, res, next) => {
   db.query(qString)
     //grabbing characters from the DB
     .then(data => {
+      console.log(data.rows)
       res.locals.gaffes = data.rows;
       return next();
     })
@@ -79,11 +80,11 @@ Controller.getPresets = (req, res, next) => {
 Controller.savePreset = (req, res, next) => {
   
   req.body = ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
-  let qString =  'INSERT INTO presets(presetname, list) VALUE (';
-  qString += `'${arr.shift()}','`;
-  qString = qString + arr.join('#') + ')';
-
-  db.query(qString)
+  let qString =  'INSERT INTO presets VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)';
+  // qString += `'${arr.shift()}','`;
+  // qString = qString + arr.join('#') + ')';
+  console.log('trying to save......')
+  db.query(qString, req.body)
     .then(data => {
       return next();
     })

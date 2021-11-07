@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/all', Controller.getPokemon, Controller.getInstruments, Controller.getGaffes, (req, res) => {
-  console.log('getting all the things');
+  console.log('getting all the things'); 
 
   return res.status(200).json({pokemon: res.locals.pokemon, instruments : res.locals.instruments, gaffes: res.locals.gaffes});
 });
