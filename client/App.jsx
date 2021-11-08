@@ -35,6 +35,7 @@ function App() {
       .then(res => res.json())
       .then(data => {
         setAllSounds(data);
+        console.log(data);
         setDefaultPresets(Object.keys(data))
       })
       .catch(err => {

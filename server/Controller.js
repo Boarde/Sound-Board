@@ -98,6 +98,8 @@ Controller.getPresets = (req, res, next) => {
 // };
 
 Controller.getALL = (req, res, next) => {
+  console.log(req.body);
+  console.log('currently in the controller get ALl');
   function formatData(SQL) {
     const obj ={}
     SQL.forEach((element) => {
@@ -140,13 +142,23 @@ Controller.savePrimary = (req, res, next) => {
   //unable to do multiple queries at the same time so I need to create
   //the primary key in the preset table for better username usage
   const testing = req.body.newPreset
-  let qString = "";
-  console.log('adding to the ')
+  const names = [testing[0], testing[14]]
+  let qString = "Insert INTO presets (name, username) Values ($1, $2)";
+  db.query(qString, names)
+    .then(() => {
+      return next();
+    })
+    .catch(err => {
+      console.log(err.message);
+      return next({
+        log: 'Error in Controller.savePrimary',
+        message: {err: 'Controller.savePrimary'}
+      });
+    });
 }
 Controller.savePreset = (req, res, next) => {
-  console.log('this is the post request body', req.body.newPreset);
   const testing = req.body.newPreset;
-  let qString =  "Insert INTO presetSongs Values ($1, $2), ($1, $3), ($1, $4), ($1, $5), ($1, $6), ($1, $7), ($1, $8), ($1, $9), ($1, $10), ($1, $11), ($1, $12), ($1, $13);"
+  let qString =  "Insert INTO presetSongs Values ($1, $2, $14), ($1, $3, $14), ($1, $4, $14), ($1, $5, $14), ($1, $6, $14), ($1, $7, $14), ($1, $8, $14), ($1, $9, $14), ($1, $10, $14), ($1, $11, $14), ($1, $12, $14), ($1, $13, $14);"
   // qString += `'${arr.shift()}','`;
   // qString = qString + arr.join('#') + ')';
   db.query(qString, testing)
@@ -184,6 +196,7 @@ Controller.login = (req, res, next) => {
 Controller.signup = (req, res, next) => {
   console.log('this is the post request body', req.body.allInfo);
   const { username, password } = req.body.allInfo;
+  console.log(req.body.allInfo);
   let qString =  "Insert INTO users (name, password) Values ($1, $2);" //inserting username, pw, preset options
   console.log('trying to save......Adam')
   db.query(qString, [username, password])

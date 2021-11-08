@@ -36,6 +36,7 @@ const Customizer = (props) => {
   // POST FETCH REQUEST
   //Instead we should submit an array with the ...Object.values(newPreset) AND the links right here) 
   const addPreset = () => {
+    console.log(props.currUser);
     props.setMenuStatus(false);
     databaseEntry = [presetName, ...Object.values(newPreset)];
     console.log('databaseentry',databaseEntry);
