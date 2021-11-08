@@ -30,6 +30,12 @@ header {
   align-content: center;
 }
 
+#presetSettings{
+  position: absolute;
+  top: 20;
+  right: 20;
+}
+
 // <-------- BOARD & BUTTONS --------->
 
 .board {
@@ -206,3 +212,4 @@ header {
   filter: drop-shadow(0px 0px 5px rgb(134, 233, 225));
   transition: filter 0s;
 }
+

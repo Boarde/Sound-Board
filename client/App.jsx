@@ -9,6 +9,12 @@ function App() {
   // const [state, setState] = useState(initialState);
   const [allSounds, setAllSounds] = useState([]);
   const [preset, setPreset] = useState('pokemon'); // initialize to pokemon
+  const [menuStatus, setMenuStatus] = useState(false);
+  const [menu, setMenu] = useState(<div>
+    <Board preset={ preset } allSounds={ allSounds } />
+    <Settings defaultPresets={ defaultPresets } setPreset={ setPreset } />
+    </div>
+    ); //sets default page to soundboard
   const [defaultPresets, setDefaultPresets] = useState([]);
   
   // useEffect is like componentDidMount componentDidUnmount
@@ -21,7 +27,6 @@ function App() {
     })
       .then(res => res.json())
       .then(data => {
-        console.log('This is our data =>', data);
         setAllSounds(data);
         setDefaultPresets(Object.keys(data))
       })
@@ -30,19 +35,14 @@ function App() {
       });
   }, []);
 
-
-
   return (
     //load user settings and render the board
     <div className="app-wrapper">
-      <Settings defaultPresets={ defaultPresets } setPreset={ setPreset } />
-      <Board preset={ preset } allSounds={ allSounds } />
-      <Customizer allSounds={ allSounds } />
+      <button id="presetSettings"onClick= {()=> setMenuStatus(!menuStatus)}><span>Customize</span></button>
+      { menuStatus && <Customizer setMenuStatus={ setMenuStatus } allSounds={ allSounds }/>}
+      { menuStatus || <Settings defaultPresets={ defaultPresets } setPreset={ setPreset }/>}
+      { menuStatus || <Board preset={ preset } allSounds={ allSounds }/>}
     </div>
-    //customizer will go here
-    //<div className="customizer">
-    // <Customizer allSounds= {allSounds}>
-    // </div>
   )
 
 }
