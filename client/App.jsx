@@ -56,12 +56,7 @@ function App() {
       .then(res => res.json())
       .then(data => {
         setAllSounds(data);
-<<<<<<< HEAD
-        console.log(data);
-        setDefaultPresets(Object.keys(data))
-=======
         setDefaultPresets(Object.keys(data));
->>>>>>> 8425ba2751d56c0fe47199e3ecb7a12f5106a2d7
       })
       .catch(err => {
         console.log("Error fetching request from back end", err);
