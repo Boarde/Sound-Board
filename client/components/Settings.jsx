@@ -9,7 +9,7 @@ const Settings = (props) => {
   });
   
   return (
-    <div className="settings-wrapper">
+    <div  className="settings-wrapper" >
       <select onChange={e => props.setPreset(e.target.value) }>
         { options }
       </select>
