@@ -9,11 +9,7 @@ function App() {
   // const [state, setState] = useState(initialState);
   const [allSounds, setAllSounds] = useState([]);
   const [preset, setPreset] = useState('pokemon'); // initialize to pokemon
-  const [defaultPresets] = useState([
-    'pokemon',
-    'instruments',
-    'gaffes'
-  ]);
+  const [defaultPresets, setDefaultPresets] = useState([]);
   
   // useEffect is like componentDidMount componentDidUnmount
   useEffect(() => {
@@ -27,6 +23,7 @@ function App() {
       .then(data => {
         console.log('This is our data =>', data);
         setAllSounds(data);
+        setDefaultPresets(Object.keys(data))
       })
       .catch(err => {
         console.log("Error fetching request from back end", err);
