@@ -26,8 +26,8 @@ function App() {
   // useEffect is like componentDidMount componentDidUnmount
   useEffect(() => {
     fetch('/all', {
-      method: 'GET',
-      headers: {
+      method: 'POST', // CHANGE TO POST -> CHANGE SERVER ROUTES -> CHANGE HOW CONTROLLER HANDLES REQ.BODY
+      headers: {     //
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username: currUser })
@@ -42,13 +42,18 @@ function App() {
       });
   }, []);
 
+  const logOut = () => {
+    setLoggedIn(false);
+    setCurrUser(null);
+  }
+
   return (
     //load user settings and render the board
     <div className="app-wrapper">
       <button className="presetSettings"onClick= {()=> setMenuStatus(!menuStatus)}></button>
-      { !loggedIn && <button id="login-button" onClick= {() => setShowLogin(!showLogin)}></button> }
+      { !loggedIn && <button id="login-form" onClick= {() => setShowLogin(!showLogin)}></button> }
       { (showLogin && !loggedIn) && <LogIn setCurrUser={ setCurrUser } setLoggedIn={ setLoggedIn }  /> }
-      { loggedIn && <button id='log-out-button' onClick={ () => setCurrUser(null) }>Log Out</button> }
+      { loggedIn && <button id="log-out-button" onClick={ logOut }>Log Out</button> }
       { menuStatus && <Customizer currUser={ currUser } setMenuStatus={ setMenuStatus } allSounds={ allSounds }/> }
       { menuStatus || <Settings defaultPresets={ defaultPresets } setPreset={ setPreset }/> }
       { menuStatus || <Board preset={ preset } allSounds={ allSounds }/> }

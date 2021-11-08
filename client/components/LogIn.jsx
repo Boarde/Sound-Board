@@ -6,7 +6,7 @@ const LogIn = (props) => {
 
   const postLogIn = () => {
     fetch('/login', {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },

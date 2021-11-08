@@ -22,12 +22,12 @@ app.get('/', (req, res) => {
 //   return res.status(200).json({pokemon: res.locals.pokemon, instruments : res.locals.instruments, gaffes: res.locals.gaffes});
 // });
 
-app.get('/all', Controller.getALL, (req, res)=> {
+app.post('/all', Controller.getALL, (req, res)=> {
   console.log('trying to create the same formatting as manually doing it')
   return res.status(200).json(res.locals.all)
 })
 
-app.get('/presets', Controller.getPresets, (req, res) => {
+app.post('/presets', Controller.getPresets, (req, res) => {
   console.log('got list of presets');
   return res.status(200).json(res.locals.presets);
 });
@@ -37,7 +37,7 @@ app.post('/savePreset', Controller.savePreset, (req, res) => {
   return res.sendStatus(200);
 });
 
-app.get('/login', Controller.login, (req, res) => {
+app.post('/login', Controller.login, (req, res) => {
   console.log('logged in');
   return res.sendStatus(200).json(res.locals.loginStatus);
 });
