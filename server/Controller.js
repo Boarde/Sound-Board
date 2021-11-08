@@ -145,7 +145,6 @@ Controller.savePreset = (req, res, next) => {
   let qString =  "Insert INTO presetSongs Values ($1, $2), ($1, $3), ($1, $4), ($1, $5), ($1, $6), ($1, $7), ($1, $8), ($1, $9), ($1, $10), ($1, $11), ($1, $12), ($1, $13);"
   // qString += `'${arr.shift()}','`;
   // qString = qString + arr.join('#') + ')';
-  console.log('trying to save......Adam')
   db.query(qString, testing)
     .then(() => {
       return next();
@@ -153,17 +152,16 @@ Controller.savePreset = (req, res, next) => {
     .catch(err => {
       console.log(err.message);
       return next({
-        log: 'Error in Controller.getGaffes',
-        message: {err: 'Controller.getGaffes: Error'}
+        log: 'Error in Controller.savePreset',
+        message: {err: 'Controller.savePreset'}
       });
     });
 };
 
 Controller.login = (req, res, next) => {
-  console.log('this is the post request body', req.body.userInfo);
+  console.log('this is the get request body', req.body.userInfo);
   const testing = req.body.userInfo;
   let qString =  ''; //grab user presets while matching for username/pw
-  console.log('trying to save......Adam')
   db.query(qString, testing)
     .then((data) => {
       res.locals.loginStatus = data.rows;
@@ -178,10 +176,9 @@ Controller.login = (req, res, next) => {
     });
 };
 Controller.signup = (req, res, next) => {
-  console.log('this is the post request body', req.body.allInfo);
+  console.log('signing up', req.body.allInfo);
   const testing = req.body.allInfo;
   let qString =  ''//inserting username, pw, preset options
-  console.log('trying to save......Adam')
   db.query(qString, testing)
     .then(() => {
       return next();
@@ -189,8 +186,8 @@ Controller.signup = (req, res, next) => {
     .catch(err => {
       console.log(err.message);
       return next({
-        log: 'Error in Controller.getGaffes',
-        message: {err: 'Controller.getGaffes: Error'}
+        log: 'Error in Controller.signup',
+        message: {err: 'Controller.signup: Error' }
       });
     });
 };
