@@ -29,7 +29,7 @@ function App() {
         setAllSounds(data);
       })
       .catch(err => {
-        console.log("Error fetching request from back end");
+        console.log("Error fetching request from back end", err);
       });
   }, []);
 

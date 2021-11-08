@@ -21,6 +21,7 @@ const Customizer = (props) => {
 
 //SHIT TROLL
   const currentSounds = [];
+  console.log('please get lucky', props.allSounds)
   const soundsArray = () => {
     Object.keys(props.allSounds).forEach(element => {
       for (let i = 0; i < props.allSounds[element].length; i++) {
@@ -40,6 +41,7 @@ const Customizer = (props) => {
 
 
   // POST FETCH REQUEST
+  //Instead we should submit an array with the ...Object.values(newPreset) AND the links right here) 
   const addPreset = () => {
     databaseEntry = [presetName, ...Object.values(newPreset)];
     console.log('databaseentry',databaseEntry);
