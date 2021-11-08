@@ -77,7 +77,7 @@ Controller.getPresets = (req, res, next) => {
 };
 
 Controller.savePreset = (req, res, next) => {
-  
+
   req.body = ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
   let qString =  'INSERT INTO presets(presetname, list) VALUE (';
   qString += `'${arr.shift()}','`;
