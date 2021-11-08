@@ -16,12 +16,16 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname + '/index.html'));
 });
 
-app.get('/all', Controller.getPokemon, Controller.getInstruments, Controller.getGaffes, (req, res) => {
-  console.log('getting all the things'); 
+// app.get('/all', Controller.getPokemon, Controller.getInstruments, Controller.getGaffes, (req, res) => {
+//   console.log('getting all the things'); 
 
-  return res.status(200).json({pokemon: res.locals.pokemon, instruments : res.locals.instruments, gaffes: res.locals.gaffes});
-});
+//   return res.status(200).json({pokemon: res.locals.pokemon, instruments : res.locals.instruments, gaffes: res.locals.gaffes});
+// });
 
+app.get('/all', Controller.getALL, (req, res)=> {
+  console.log('trying to create the same formatting as manually doing it')
+  return res.status(200).json(res.locals.all)
+})
 
 app.get('/presets', Controller.getPresets, (req, res) => {
   console.log('got list of presets');
