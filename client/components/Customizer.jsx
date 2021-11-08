@@ -20,7 +20,9 @@ const Customizer = (props) => {
   const soundsArray = () => {
     Object.keys(props.allSounds).forEach(element => {
       for (let i = 0; i < props.allSounds[element].length; i++) {
-        currentSounds.push(props.allSounds[element][i].name)
+        if (!currentSounds.includes(props.allSounds[element][i].name)){
+          currentSounds.push(props.allSounds[element][i].name)
+        }
       }
      }
     )
