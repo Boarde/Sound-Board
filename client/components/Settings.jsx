@@ -5,7 +5,7 @@ const Settings = (props) => {
 
   // POPULATING OPTIONS DROPDOWN
   const options = props.defaultPresets.map((preset, i) => {
-    return <option className = "settings-element" key={ i }> { preset } </option>
+    return <option key={ i } value={ preset }> { preset } </option>
   });
   
   return (
