@@ -44,11 +44,14 @@ const LogIn = (props) => {
 
   return (
     <div className="login-wrapper">
-      <form onSubmit={ () => postLogIn() }>
+      <form>
         <div id="username-input" style={{color:'white'}}>Username: <input onChange={e => setUsername(e.target.value)} type="text" required></input></div>
         <div id="login-input" style={{color:'white'}}>Password: <input onChange={e => setPassword(e.target.value)} type="password" required></input></div>
         <div className = "outer">
-          <button className = "login-button-click" onClick={ postLogIn }>Log In</button>
+          <button className = "login-button-click" onClick={ e=> {
+            e.preventDefault();
+            postLogIn();
+          }  }>Log In</button>
           <button className = "login-button-click" onClick={ postSignUp }>Sign Up</button>
         </div>
       </form>

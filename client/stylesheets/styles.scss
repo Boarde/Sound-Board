@@ -48,6 +48,19 @@ header {
   cursor: pointer;
   border: none;
 }
+// <--------LOGOUT GEAR BUTTON --------->
+#log-out-button {
+  background: black;
+  position: absolute;
+  top: 20;
+  right: 80;
+  background: url(logout.png) no-repeat;
+  background-size: 40px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border: none;
+}
 
 // <--------LOGIN GEAR BUTTON --------->
 #login-form {
@@ -62,18 +75,7 @@ header {
   cursor: pointer;
   border: none;
 }
-// <--------LOGOUT GEAR BUTTON --------->
-#log-out-button {
-  position: absolute;
-  top: 20;
-  right: 80;
-  background: url(logout.png) no-repeat;
-  background-size: 40px;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  border: none;
-}
+
 // <--------LOGIN PAGE --------->
 .login-wrapper {
   display: grid;
@@ -92,7 +94,7 @@ header {
     display: inline-block;
     background-color: violet;
     font-family: 'Orbitron', sans-serif;
-    
+
 }
 
 // <--------CUSTOMIZER PAGE MENU DOWN --------->
@@ -121,8 +123,7 @@ input, input[type="text"]{
   justify-content: center;
   align-content: center;
   grid-gap: 1rem;
-  grid-template-columns: repeat(4, 10vw);
-  grid-template-rows: repeat(6, 10vw);
+  grid-template-columns: 200px 200px 200px 200px;
   background-color: black;
 }
 
@@ -321,11 +322,11 @@ input, input[type="text"]{
 }
 
 
-.test {
-  padding: 20px;
-  background-color:white;
-}
+// .test {
+//   padding: 20px;
+//   background-color:white;
+// }
 
-input:focus {
-  outline: none;
-}
+// input:focus {
+//   outline: none;
+// }

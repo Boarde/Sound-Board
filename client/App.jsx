@@ -11,7 +11,7 @@ function App() {
   // STATE FOR ALL SOUNDS
   const [allSounds, setAllSounds] = useState([]);
   // STATE FOR PRESETS
-  const [preset, setPreset] = useState('pokemon');
+  const [preset, setPreset] = useState('gaffes');
   // STATE FOR CONDITIONAL RENDERING BOARD VS MENU
   const [menuStatus, setMenuStatus] = useState(false);
   // STATE FOR DEFAULT PRESETS ON PAGE LOAD
@@ -22,6 +22,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   // STATE FOR LOGGED IN USER
   const [currUser, setCurrUser] = useState(null);
+
   
   // useEffect is like componentDidMount componentDidUnmount
   useEffect(() => {
@@ -35,7 +36,7 @@ function App() {
       .then(res => res.json())
       .then(data => {
         setAllSounds(data);
-        setDefaultPresets(Object.keys(data))
+        setDefaultPresets(Object.keys(data));
       })
       .catch(err => {
         console.log("Error fetching request from back end", err);
@@ -50,10 +51,11 @@ function App() {
   return (
     //load user settings and render the board
     <div className="app-wrapper">
+      {/* displays the gear for settings */}
       <button className="presetSettings"onClick= {()=> setMenuStatus(!menuStatus)}></button>
       { !loggedIn && <button id="login-form" onClick= {() => setShowLogin(!showLogin)}></button> }
-      { (showLogin && !loggedIn) && <LogIn setCurrUser={ setCurrUser } setLoggedIn={ setLoggedIn }  /> }
-      { loggedIn && <button id="log-out-button" onClick={ logOut }>Log Out</button> }
+      { (showLogin && !loggedIn) && <LogIn setCurrUser={ setCurrUser } setLoggedIn={ setLoggedIn } currUser={ currUser } loggedIn={ loggedIn } /> }
+      { loggedIn && <button id="log-out-button" onClick={ logOut }></button> }
       { menuStatus && <Customizer currUser={ currUser } setMenuStatus={ setMenuStatus } allSounds={ allSounds }/> }
       { menuStatus || <Settings defaultPresets={ defaultPresets } setPreset={ setPreset }/> }
       { menuStatus || <Board preset={ preset } allSounds={ allSounds }/> }
