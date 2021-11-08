@@ -139,9 +139,12 @@ Controller.getALL = (req, res, next) => {
       })
     })
 }
-
+Controller.savePrimary = (req, res, next) => {
+  //unable to do multiple queries at the same time so I need to create
+  //the primary key in the preset table for better username usage
+}
 Controller.savePreset = (req, res, next) => {
-  
+  //WORKING 
   const testing = ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
   let qString =  "Insert INTO presetSongs Values ($1, $2), ($1, $3), ($1, $4), ($1, $5), ($1, $6), ($1, $7), ($1, $8), ($1, $9), ($1, $10), ($1, $11), ($1, $12), ($1, $13);"
   // qString += `'${arr.shift()}','`;
