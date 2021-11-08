@@ -27,17 +27,12 @@ app.post('/all', Controller.getALL, (req, res)=> {
   return res.status(200).json(res.locals.all)
 })
 
-app.post('/presets', Controller.getPresets, (req, res) => {
-  console.log('got list of presets');
-  return res.status(200).json(res.locals.presets);
-});
-
-app.post('/savePreset', Controller.savePreset, (req, res) => {
+app.post('/savePreset', Controller.savePrimary, Controller.savePreset, Controller.getALL, (req, res) => {
   console.log('sent preset to db');
   return res.sendStatus(200);
 });
 
-app.post('/login', Controller.login, (req, res) => {
+app.post('/login', Controller.login, Controller.getALL, (req, res) => {
   console.log('logged in');
   return res.sendStatus(200).json(res.locals.loginStatus);
 });
