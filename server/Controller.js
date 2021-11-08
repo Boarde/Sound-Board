@@ -138,7 +138,13 @@ Controller.getALL = (req, res, next) => {
       })
     })
 }
-
+Controller.savePrimary = (req, res, next) => {
+  //unable to do multiple queries at the same time so I need to create
+  //the primary key in the preset table for better username usage
+  const testing = req.body.newPreset
+  let qString = "";
+  console.log('adding to the ')
+}
 Controller.savePreset = (req, res, next) => {
   console.log('this is the post request body', req.body.newPreset);
   const testing = req.body.newPreset;
@@ -159,12 +165,20 @@ Controller.savePreset = (req, res, next) => {
 };
 
 Controller.login = (req, res, next) => {
+<<<<<<< HEAD
   console.log('this is the get request body', req.body.userInfo);
   const testing = req.body.userInfo;
   let qString =  ''; //grab user presets while matching for username/pw
   db.query(qString, testing)
+=======
+  console.log('this is the post request body', req.body.userInfo);
+  const { username, password } = req.body.userInfo;
+  let qString =  'select * from users Where name = $1 AND password = $2'; //grab user presets while matching for username/pw
+  console.log('trying to save......Adam')
+  db.query(qString, [username, password])
+>>>>>>> dev
     .then((data) => {
-      res.locals.loginStatus = data.rows;
+      res.locals.loginStatus = true;
       return next();
     })
     .catch(err => {
@@ -176,10 +190,18 @@ Controller.login = (req, res, next) => {
     });
 };
 Controller.signup = (req, res, next) => {
+<<<<<<< HEAD
   console.log('signing up', req.body.allInfo);
   const testing = req.body.allInfo;
   let qString =  ''//inserting username, pw, preset options
   db.query(qString, testing)
+=======
+  console.log('this is the post request body', req.body.allInfo);
+  const { username, password } = req.body.allInfo;
+  let qString =  "Insert INTO users (name, password) Values ($1, $2);" //inserting username, pw, preset options
+  console.log('trying to save......Adam')
+  db.query(qString, [username, password])
+>>>>>>> dev
     .then(() => {
       return next();
     })
@@ -187,7 +209,11 @@ Controller.signup = (req, res, next) => {
       console.log(err.message);
       return next({
         log: 'Error in Controller.signup',
+<<<<<<< HEAD
         message: {err: 'Controller.signup: Error' }
+=======
+        message: {err: 'Controller.signup: Error'}
+>>>>>>> dev
       });
     });
 };
