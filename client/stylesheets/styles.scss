@@ -36,6 +36,12 @@ header {
   right: 20;
 }
 
+#loginForm {
+  position: absolute;
+  top: 20;
+  right: 300;
+}
+
 // <-------- BOARD & BUTTONS --------->
 
 .board {
@@ -211,5 +217,11 @@ header {
     10px 0 40px #0ff;
   filter: drop-shadow(0px 0px 5px rgb(134, 233, 225));
   transition: filter 0s;
+}
+
+
+.test {
+  padding: 20px;
+  background-color:white;
 }
 

@@ -158,4 +158,42 @@ Controller.savePreset = (req, res, next) => {
       });
     });
 };
+
+Controller.login = (req, res, next) => {
+  console.log('this is the post request body', req.body.userInfo);
+  const testing = req.body.userInfo;
+  let qString =  ''; //grab user presets while matching for username/pw
+  console.log('trying to save......Adam')
+  db.query(qString, testing)
+    .then((data) => {
+      res.locals.loginStatus = data.rows;
+      return next();
+    })
+    .catch(err => {
+      console.log(err.message);
+      return next({
+        log: 'Error in Controller.getGaffes',
+        message: {err: 'Controller.getGaffes: Error'}
+      });
+    });
+};
+Controller.signup = (req, res, next) => {
+  console.log('this is the post request body', req.body.allInfo);
+  const testing = req.body.allInfo;
+  let qString =  ''//inserting username, pw, preset options
+  console.log('trying to save......Adam')
+  db.query(qString, testing)
+    .then(() => {
+      return next();
+    })
+    .catch(err => {
+      console.log(err.message);
+      return next({
+        log: 'Error in Controller.getGaffes',
+        message: {err: 'Controller.getGaffes: Error'}
+      });
+    });
+};
+
+
 module.exports = Controller;

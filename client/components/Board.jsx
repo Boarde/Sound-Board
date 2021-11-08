@@ -30,9 +30,6 @@ const Board = (props) => {
   return (
     <div className="board">
       { allSoundButtons }
-      <div className="test">
-        TEST
-      </div>
     </div>
   )
 }
