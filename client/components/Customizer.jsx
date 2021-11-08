@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
 const Customizer = (props) => {
-  const [newPreset, setNewPreset] = useState({
-    0:"boop",
-    1:"boop",
-    2:"boop",
-    3:"boop",
-    4:"boop",
-    5:"boop",
-    6:"boop",
-    7:"boop",
-    8:"boop",
-    9:"boop",
-    10:"boop",
-    11:"boop",
-    });
+  const [newPreset, setNewPreset] = useState([]);
   const [presetName, setPresetName] = useState('');
 
+  
+  useEffect(() => {
+    const defaultPreset = [];
+    for (let i = 0; i < 12; i ++) {
+      defaultPreset.push(currentSounds[0]);
+    }
+    setNewPreset(defaultPreset);
+  }, []);
+  
   let databaseEntry = "";
 
-//SHIT TROLL
   const currentSounds = [];
-  console.log('please get lucky', props.allSounds)
   const soundsArray = () => {
     Object.keys(props.allSounds).forEach(element => {
       for (let i = 0; i < props.allSounds[element].length; i++) {
@@ -30,10 +24,8 @@ const Customizer = (props) => {
      }
     )
   }
-  console.log('CUSTOMIZER currentSounds', currentSounds);
 
   soundsArray();
-  //console.log(currentSounds)
   const formElements = currentSounds.map((element, i) => (
     <option key={`${i}`} value={element}> { element } </option>
   ));
@@ -43,6 +35,7 @@ const Customizer = (props) => {
   // POST FETCH REQUEST
   //Instead we should submit an array with the ...Object.values(newPreset) AND the links right here) 
   const addPreset = () => {
+    props.setMenuStatus(false);
     databaseEntry = [presetName, ...Object.values(newPreset)];
     console.log('databaseentry',databaseEntry);
     fetch('/savePreset', {
@@ -50,7 +43,8 @@ const Customizer = (props) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ newPreset: [presetName, ...Object.values(newPreset)]})
+      body: JSON.stringify({ newPreset: [presetName, ...Object.values(newPreset)/*, username */]})
+      //body has to be in this format { newPreset : ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
         
       // }
     })
@@ -74,22 +68,27 @@ const Customizer = (props) => {
   const presetOptions = [];
   for (let i = 0; i < 12; i++) {
     presetOptions.push(
-      <select onChange={ e => handleChange(i, e) } id={`${i}dropdown`} name="soundClips">
-        { formElements }
-      </select>
+      <div className="customizer-dropdown-wrapper">
+        <select onChange={ e => handleChange(i, e) } id={`${i}dropdown`} name="soundClips">
+          { formElements }
+        </select>
+      </div>
     )
   }
+
   
   return (
-    <form onSubmit={ (e) => {
-      e.preventDefault();
-      addPreset();
-    }}>
-      <label htmlFor="preset-name" style={{color: "white"}}>Preset Name:     </label>
-      <input onChange={ (e) => setPresetName(e.target.value) } id="preset-name" type="text" required></input>
-      { presetOptions }
-      <input type="submit"></input>
-    </form>
+  <div className="customizer-wrapper">
+      <form onSubmit={ (e) => {
+        e.preventDefault();
+        addPreset();
+      }}>
+        <label htmlFor="preset-name" style={{color: "white"}}>Preset Name:     </label>
+        <input onChange={ (e) => setPresetName(e.target.value) } id="preset-name" type="text" required></input>
+        { presetOptions }
+        <input type="submit"></input>
+      </form>
+  </div>
     // GET NAME OF PRESET
     // SEND NEW PRESET IN FORMAT OF  [preset-name, name-of-sound...]
   )

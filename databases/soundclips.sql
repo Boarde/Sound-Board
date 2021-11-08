@@ -218,7 +218,18 @@ Insert INTO public.presetSongs Values ('custom1', 'machoke');
 
 
 
+ALTER TABLE presetsongs
+ADD username varchar;
 
+ALTER TABLE presets
+ADD username varchar;
 
-
+CREATE TABLE public.users (
+  "_id" serial NOT NULL,
+  "name" varchar NOT NULL,
+  "password" varchar NOT NULL,
+  CONSTRAINT "users_pk" PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
 

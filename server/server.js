@@ -37,6 +37,15 @@ app.post('/savePreset', Controller.savePreset, (req, res) => {
   return res.sendStatus(200);
 });
 
+app.get('/login', Controller.login, (req, res) => {
+  console.log('logged in');
+  return res.sendStatus(200).json(loginStatus);
+});
+
+app.post('/signup', Controller.signup, (req, res) => {
+  console.log('signed up new user');
+  return res.sendStatus(200);
+});
 
 app.use('*', (req,res) => {
   console.log("not found");

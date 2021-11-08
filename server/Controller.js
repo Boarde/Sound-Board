@@ -46,7 +46,7 @@ Controller.getGaffes = (req, res, next) => {
   db.query(qString)
     //grabbing characters from the DB
     .then(data => {
-      console.log(data.rows)
+      // console.log(data.rows)
       res.locals.gaffes = data.rows;
       return next();
     })
@@ -125,7 +125,6 @@ Controller.getALL = (req, res, next) => {
   console.log('trying to get all with the parse')
   db.query(qString)
     .then(data => {
-      console.log(data.rows)
       console.log('this is formatted ------->', formatData(data.rows));
       console.log('what is going on ??????????');
       res.locals.all = formatData(data.rows);
@@ -144,8 +143,8 @@ Controller.savePrimary = (req, res, next) => {
   //the primary key in the preset table for better username usage
 }
 Controller.savePreset = (req, res, next) => {
-  //WORKING 
-  const testing = ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
+  console.log('this is the post request body', req.body.newPreset);
+  const testing = req.body.newPreset;
   let qString =  "Insert INTO presetSongs Values ($1, $2), ($1, $3), ($1, $4), ($1, $5), ($1, $6), ($1, $7), ($1, $8), ($1, $9), ($1, $10), ($1, $11), ($1, $12), ($1, $13);"
   // qString += `'${arr.shift()}','`;
   // qString = qString + arr.join('#') + ')';
@@ -162,4 +161,42 @@ Controller.savePreset = (req, res, next) => {
       });
     });
 };
+
+Controller.login = (req, res, next) => {
+  console.log('this is the post request body', req.body.userInfo);
+  const testing = req.body.userInfo;
+  let qString =  ''; //grab user presets while matching for username/pw
+  console.log('trying to save......Adam')
+  db.query(qString, testing)
+    .then((data) => {
+      res.locals.loginStatus = data.rows;
+      return next();
+    })
+    .catch(err => {
+      console.log(err.message);
+      return next({
+        log: 'Error in Controller.getGaffes',
+        message: {err: 'Controller.getGaffes: Error'}
+      });
+    });
+};
+Controller.signup = (req, res, next) => {
+  console.log('this is the post request body', req.body.allInfo);
+  const testing = req.body.allInfo;
+  let qString =  ''//inserting username, pw, preset options
+  console.log('trying to save......Adam')
+  db.query(qString, testing)
+    .then(() => {
+      return next();
+    })
+    .catch(err => {
+      console.log(err.message);
+      return next({
+        log: 'Error in Controller.getGaffes',
+        message: {err: 'Controller.getGaffes: Error'}
+      });
+    });
+};
+
+
 module.exports = Controller;
