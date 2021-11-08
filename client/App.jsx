@@ -49,7 +49,7 @@ function App() {
     fetch('/all', {
       method: 'POST', // CHANGE TO POST -> CHANGE SERVER ROUTES -> CHANGE HOW CONTROLLER HANDLES REQ.BODY
       headers: {     //
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ username: currUser })
     })
@@ -72,14 +72,13 @@ function App() {
     fetch('/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ allInfo: { username: username, password: password } })
     })
       .then(res => {
         setLoggedIn(true);
         setCurrUser(username);
-        res.json();
       })
       .catch(err => {
         console.log("Error logging in user", err);
@@ -98,7 +97,6 @@ function App() {
       .then(res => {
         setLoggedIn(true);
         setCurrUser(username);
-        res.json();
       })
       .catch(err => {
         console.log("Error sign up", err);
