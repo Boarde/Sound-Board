@@ -83,7 +83,18 @@ INSERT INTO public.gaffes Values (11, 'what_are_those', 'https://quicksounds.com
 INSERT INTO public.gaffes Values (12, 'minecraft', 'https://quicksounds.com/uploads/tracks/790215121_1967163684_1652412828.mp3');
 
 
+ALTER TABLE presetsongs
+ADD username varchar;
 
+ALTER TABLE presets
+ADD username varchar;
 
-
+CREATE TABLE public.users (
+  "_id" serial NOT NULL,
+  "name" varchar NOT NULL,
+  "password" varchar NOT NULL,
+  CONSTRAINT "users_pk" PRIMARY KEY ("_id")
+) WITH (
+  OIDS=FALSE
+);
 

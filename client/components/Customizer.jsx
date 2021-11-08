@@ -43,7 +43,7 @@ const Customizer = (props) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ newPreset: [presetName, ...Object.values(newPreset)]})
+      body: JSON.stringify({ newPreset: [presetName, ...Object.values(newPreset)/*, username */]})
       //body has to be in this format { newPreset : ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
         
       // }
@@ -78,15 +78,17 @@ const Customizer = (props) => {
 
   
   return (
-    <form onSubmit={ (e) => {
-      e.preventDefault();
-      addPreset();
-    }}>
-      <label htmlFor="preset-name" style={{color: "white"}}>Preset Name:     </label>
-      <input onChange={ (e) => setPresetName(e.target.value) } id="preset-name" type="text" required></input>
-      { presetOptions }
-      <input type="submit"></input>
-    </form>
+  <div className="customizer-wrapper">
+      <form onSubmit={ (e) => {
+        e.preventDefault();
+        addPreset();
+      }}>
+        <label htmlFor="preset-name" style={{color: "white"}}>Preset Name:     </label>
+        <input onChange={ (e) => setPresetName(e.target.value) } id="preset-name" type="text" required></input>
+        { presetOptions }
+        <input type="submit"></input>
+      </form>
+  </div>
     // GET NAME OF PRESET
     // SEND NEW PRESET IN FORMAT OF  [preset-name, name-of-sound...]
   )
