@@ -19,9 +19,7 @@ const Customizer = (props) => {
 
   let databaseEntry = "";
 
-//SHIT TROLL
   const currentSounds = [];
-  console.log('please get lucky', props.allSounds)
   const soundsArray = () => {
     Object.keys(props.allSounds).forEach(element => {
       for (let i = 0; i < props.allSounds[element].length; i++) {
