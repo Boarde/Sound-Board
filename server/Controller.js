@@ -125,8 +125,6 @@ Controller.getALL = (req, res, next) => {
   console.log('trying to get all with the parse')
   db.query(qString)
     .then(data => {
-      console.log('this is formatted ------->', formatData(data.rows));
-      console.log('what is going on ??????????');
       res.locals.all = formatData(data.rows);
       return next();
     })
@@ -151,7 +149,6 @@ Controller.savePreset = (req, res, next) => {
   let qString =  "Insert INTO presetSongs Values ($1, $2), ($1, $3), ($1, $4), ($1, $5), ($1, $6), ($1, $7), ($1, $8), ($1, $9), ($1, $10), ($1, $11), ($1, $12), ($1, $13);"
   // qString += `'${arr.shift()}','`;
   // qString = qString + arr.join('#') + ')';
-  console.log('trying to save......Adam')
   db.query(qString, testing)
     .then(() => {
       return next();
@@ -159,8 +156,8 @@ Controller.savePreset = (req, res, next) => {
     .catch(err => {
       console.log(err.message);
       return next({
-        log: 'Error in Controller.getGaffes',
-        message: {err: 'Controller.getGaffes: Error'}
+        log: 'Error in Controller.savePreset',
+        message: {err: 'Controller.savePreset'}
       });
     });
 };
@@ -168,6 +165,7 @@ Controller.savePreset = (req, res, next) => {
 Controller.login = (req, res, next) => {
   console.log('this is the post request body', req.body.userInfo);
   const { username, password } = req.body.userInfo;
+  console.log({'username': username, 'password':password});
   let qString =  'select * from users Where name = $1 AND password = $2'; //grab user presets while matching for username/pw
   console.log('trying to save......Adam')
   db.query(qString, [username, password])

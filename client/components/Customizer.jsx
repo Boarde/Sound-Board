@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 const Customizer = (props) => {
   const [newPreset, setNewPreset] = useState([]);
   const [presetName, setPresetName] = useState('');
+  console.log('PROPS.CURRUSER IN CUSTOMIZER', props.currUser);
 
   
   useEffect(() => {
@@ -43,7 +44,7 @@ const Customizer = (props) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ newPreset: [presetName, ...Object.values(newPreset)/*, username */]})
+      body: JSON.stringify({ newPreset: [presetName, ...Object.values(newPreset), props.currUser/*, username */]})
       //body has to be in this format { newPreset : ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
         
       // }
@@ -83,10 +84,16 @@ const Customizer = (props) => {
         e.preventDefault();
         addPreset();
       }}>
-        <label htmlFor="preset-name" style={{color: "white"}}>Preset Name:     </label>
-        <input onChange={ (e) => setPresetName(e.target.value) } id="preset-name" type="text" required></input>
+        <div className = "preset-form"> 
+          <label htmlFor="preset-name" style={{color:'white'}} >Preset Name:     </label>
+          <input onChange={ (e) => setPresetName(e.target.value) } id="preset-name" type="text" required></input>
+          <input type="submit"></input>
+        </div>
+
+        <div className = "preset-wrapper">
         { presetOptions }
-        <input type="submit"></input>
+        </div>
+        
       </form>
   </div>
     // GET NAME OF PRESET

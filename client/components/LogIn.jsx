@@ -6,11 +6,11 @@ const LogIn = (props) => {
 
   const postLogIn = () => {
     fetch('/login', {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ allInfo : { username: username, password: password }})
     })
       .then(res => {
         props.setLoggedIn(true);
@@ -28,7 +28,8 @@ const LogIn = (props) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ allInfo : { username: username, password: password }})
+      //const { username, password } = req.body.allInfo;
     })
       .then(res => {
         props.setLoggedIn(true);
@@ -46,8 +47,10 @@ const LogIn = (props) => {
       <form onSubmit={ () => postLogIn() }>
         <div id="username-input" style={{color:'white'}}>Username: <input onChange={e => setUsername(e.target.value)} type="text" required></input></div>
         <div id="login-input" style={{color:'white'}}>Password: <input onChange={e => setPassword(e.target.value)} type="password" required></input></div>
-        <button onClick={ postLogIn }>Log In</button>
-        <button onClick={ postSignUp }>Sign Up</button>
+        <div className = "outer">
+          <button className = "login-button-click" onClick={ postLogIn }>Log In</button>
+          <button className = "login-button-click" onClick={ postSignUp }>Sign Up</button>
+        </div>
       </form>
     </div>
   )
