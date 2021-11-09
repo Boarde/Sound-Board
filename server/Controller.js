@@ -126,9 +126,9 @@ Controller.getALL = (req, res, next) => {
   console.log('trying to get all with the parse')
   db.query(qString, username)
     .then(data => {
-      console.log(data.rows)
+      //console.log(data.rows)
       res.locals.all = formatData(data.rows);
-      console.log(res.locals.all);
+      //console.log(res.locals.all);
       return next();
     })
     .catch(err => {

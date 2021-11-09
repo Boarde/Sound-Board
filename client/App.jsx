@@ -53,6 +53,7 @@ function App() {
       },
       body: JSON.stringify({ username: currUser })
     })
+      .then(()=> console.log('bleen'))
       .then(res => res.json())
       .then(data => {
         console.log(data)
