@@ -10,13 +10,11 @@ const Board = (props) => {
     
   // 
   const renderBoard = () => {
-    console.log(sounds);
     const soundboard = [];
     for (let i = 0; i < 12; i++) {
       if (sounds[i] !== undefined) {
         soundboard.push(<SoundButton id={i} key={i} sound={ sounds[i].link } />);
       } else {
-        // sets all blank slots to boop in soundboard array if insufficient elements
         soundboard.push(<SoundButton id={i} key={i} sound={ defaultSound } />);
       }
     }
