@@ -15,7 +15,6 @@ const Board = (props) => {
       if (sounds[i] !== undefined) {
         soundboard.push(<SoundButton id={i} key={i} sound={ sounds[i].link } />);
       } else {
-        //adding 
         soundboard.push(<SoundButton id={i} key={i} sound={ defaultSound } />);
       }
     }

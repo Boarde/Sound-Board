@@ -4,6 +4,8 @@ const Customizer = (props) => {
   const [newPreset, setNewPreset] = useState([]);
   const [presetName, setPresetName] = useState('');
 
+  const soundList = props.allSounds;
+
   useEffect(() => {
     const defaultPreset = [];
     for (let i = 0; i < 12; i++) {
@@ -16,10 +18,11 @@ const Customizer = (props) => {
 
   const currentSounds = [];
   const soundsArray = () => {
-    Object.keys(props.allSounds).forEach(element => {
-      for (let i = 0; i < props.allSounds[element].length; i++) {
-        if (!currentSounds.includes(props.allSounds[element][i].name)) {
-          currentSounds.push(props.allSounds[element][i].name);
+    Object.keys(soundList).forEach(element => {
+      for (let i = 0; i < soundList[element].length; i++) {
+        if (!currentSounds.includes(soundList[element][i].name)) {
+          currentSounds.push(soundList[element][i].name);
+
         }
       }
     }
@@ -58,8 +61,8 @@ const Customizer = (props) => {
 
   };
 
-  function handleChange(i, e) {
 
+  function setPlaylist(i, e) {
     const selectedPreset = JSON.parse(JSON.stringify(newPreset));
     selectedPreset[i] = e.target.value;
     setNewPreset(selectedPreset);
@@ -69,7 +72,7 @@ const Customizer = (props) => {
   for (let i = 0; i < 12; i++) {
     presetOptions.push(
       <div className="customizer-dropdown-wrapper">
-        <select onChange={e => handleChange(i, e)} id={`${i}dropdown`} name="soundClips">
+        <select onChange={e => setPlaylist(i, e)} id={`${i}dropdown`} name="soundClips">
           {formElements}
         </select>
       </div>
@@ -83,6 +86,7 @@ const Customizer = (props) => {
         addPreset();
       }}>
         <div className="preset-form">
+          <label htmlFor="preset-name" >Preset Name:     </label>
           <label htmlFor="preset-name" style={{ color: 'white' }} >Preset Name:     </label>
           <input onChange={(e) => setPresetName(e.target.value)} id="preset-name" type="text" required></input>
           <input type="submit"></input>
