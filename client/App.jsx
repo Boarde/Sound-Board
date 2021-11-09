@@ -53,8 +53,10 @@ function App() {
       },
       body: JSON.stringify({ username: currUser })
     })
+      .then(()=> console.log('bleen'))
       .then(res => res.json())
       .then(data => {
+        console.log(data)
         setAllSounds(data);
         setDefaultPresets(Object.keys(data));
       })
@@ -74,7 +76,7 @@ function App() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ allInfo: { username: username, password: password } })
+      body: JSON.stringify({ userInfo: { username: username, password: password } })
     })
       .then(res => {
         setLoggedIn(true);

@@ -103,7 +103,7 @@ Controller.getALL = (req, res, next) => {
   function formatData(SQL) {
     const obj ={}
     SQL.forEach((element) => {
-      obj[element.presetname] = []
+      obj[element.name] = []
       const nameArray = element.names.split('#')
       const linkArray = element.links.split('#')
       const arrayObj = []
@@ -113,21 +113,22 @@ Controller.getALL = (req, res, next) => {
         nameLink.link = linkArray[i]
         arrayObj.push(nameLink)
       }
-      obj[element.presetname] = arrayObj
+      obj[element.name] = arrayObj
     })
     return obj;
     //one object with 3 keys
       //each key has an array of objects
         //each object has a name and link key
   }
-  let qString = `select presetsongs.presetName, STRING_AGG(presetsongs.sound, '#') AS names, STRING_AGG(soundLinks.link, '#') AS links from presetsongs
-  Left Join soundlinks
-  ON presetsongs.sound = soundLinks.sound
-  Group BY presetsongs.presetName`
+  let username = [req.body.userInfo.username]
+  console.log('this is the username in an array-------->', username)
+  let qString = "select presets.name, STRING_AGG(presetsongs.sound, '#') AS names, STRING_AGG(soundLinks.link, '#') AS links from presets Join presetsongs ON presets.name = presetsongs.presetName Join soundlinks ON presetsongs.sound = soundLinks.sound WHERE presetsongs.username = $1 OR presetsongs.username IS NULL Group BY presets.name"
   console.log('trying to get all with the parse')
-  db.query(qString)
+  db.query(qString, username)
     .then(data => {
+      //console.log(data.rows)
       res.locals.all = formatData(data.rows);
+      //console.log(res.locals.all);
       return next();
     })
     .catch(err => {
