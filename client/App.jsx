@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Board from './components/Board.jsx';
-import Settings from './components/Settings.jsx';
-import Customizer from './components/Customizer.jsx'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import Board from './components/Board.jsx'; // Draws the entire board and passes down props containing each sound link
+import Preset_Selector from './components/Preset_Selector.jsx'; // Generates preset list above soundboard buttons 
+import Login from './components/Login.jsx';
+import Customizer from './components/Customizer.jsx';
 
 import './stylesheets/styles.scss';
-
 
 function App() {
   // STATE FOR ALL SOUNDS
@@ -17,32 +18,9 @@ function App() {
   const [defaultPresets, setDefaultPresets] = useState([]);
   // STATE FOR SHOWING LOGIN FORM 
   const [showLogin, setShowLogin] = useState(false);
-  // STATE FOR USER LOGGED IN STATUS
-  const [loggedIn, setLoggedIn] = useState(false);
-  // STATE FOR LOGGED IN USER
-  const [currUser, setCurrUser] = useState(null);
-  // STATE FOR USERNAME
-  const [username, setUsername] = useState('');
-  // STATE FOR PASSWORD
-  const [password, setPassword] = useState('');
-
-  // we know she should have had another component, but quick fix solution
-  const loginBlock = [
-    <div className="login-wrapper">
-      <form>
-        <div id="username-input" style={{ color: 'white' }}>Username: <input onChange={e => setUsername(e.target.value)} type="text" required></input></div>
-        <div id="login-input" style={{ color: 'white' }}>Password: <input onChange={e => setPassword(e.target.value)} type="password" required></input></div>
-        <div className="outer">
-          <button className="login-button-click" onClick={e => {
-            e.preventDefault();
-            postLogIn();
-          }}>Log In</button>
-          <button className="login-button-click" onClick={postSignUp}>Sign Up</button>
-        </div>
-      </form>
-    </div>
-  ];
-
+  // Saves our current username if logged in
+  const [currUser, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
 
   // useEffect is like componentDidMount componentDidUnmount
   useEffect(() => {
@@ -63,79 +41,50 @@ function App() {
       });
   }, []);
 
+  // logout function that will reset 
   const logOut = () => {
-    setLoggedIn(false);
-    setCurrUser(null);
-  }
+    setUsername(null);
+  };
 
-  const postLogIn = () => {
-    fetch('/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ allInfo: { username: username, password: password } })
-    })
-      .then(res => {
-        setLoggedIn(true);
-        setCurrUser(username);
-      })
-      .catch(err => {
-        console.log("Error logging in user", err);
-      });
-  }
 
-  const postSignUp = () => {
-    fetch('/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ allInfo: { username: username, password: password } })
-      //const { username, password } = req.body.allInfo;
-    })
-      .then(res => {
-        setLoggedIn(true);
-        setCurrUser(username);
-      })
-      .catch(err => {
-        console.log("Error sign up", err);
-      });
-  }
+  const loginPrompt = [
+    <div key="login" className="login-wrapper">
+      <form>
+        <div id="username-input">Username: <input onChange={e => setUsername(e.target.value)} type="text" required></input></div>
+        <div id="login-input">Password: <input onChange={e => setPassword(e.target.value)} type="password" required></input></div>  
+        <div className="outer">
+          <button className="login-button-click" onClick={e => {e.preventDefault(); console.log("logging in", password, currUser)}}>Log In</button>
+          <button className="login-button-click" onClick={() => console.log('signing in', password, currUser)}>Sign Up</button>
+        </div>
+      </form>
+    </div>
+  ];
 
   return (
     //load user settings and render the board
     <div className="app-wrapper">
-      {/* DISPLAYS GEAR FOR SETTINGS */}
+      {/* Displays gear that takes user to change presets */}
       <button className="presetSettings" onClick={() => setMenuStatus(!menuStatus)}></button>
-      {!loggedIn && <button id="login-form" onClick={() => setShowLogin(!showLogin)}></button>}
 
-      {/* LOGIN BLOCK */}
-      {(showLogin && !loggedIn) &&
-        <div className="login-wrapper">
-          <form>
-            <div id="username-input" style={{ color: 'white' }}>Username: <input onChange={e => setUsername(e.target.value)} type="text" required></input></div>
-            <div id="login-input" style={{ color: 'white' }}>Password: <input onChange={e => setPassword(e.target.value)} type="password" required></input></div>
-            <div className="outer">
-              <button className="login-button-click" onClick={e => {
-                e.preventDefault();
-                postLogIn();
-              }}>Log In</button>
-              <button className="login-button-click" onClick={postSignUp}>Sign Up</button>
-            </div>
-          </form>
-        </div>
-      }
+      {/* Displays login icon and stays active while user is not logged in */}
+      {!currUser && <button id="login-form" onClick={() => setShowLogin(!showLogin)}></button>}
 
-      {/* LOG OUT BUTTON */}
-      {loggedIn && <button id="log-out-button" onClick={logOut}></button>}
+      {/* Generates login page */}
+      {loginPrompt}
 
+      {/* Displays log out icon when user is logged in */}
+      {currUser && <button id="log-out-button" onClick={logOut}></button>}
+
+      {/* Displays customizer page allowing creation of new presets */}
       {menuStatus && <Customizer currUser={currUser} setMenuStatus={setMenuStatus} allSounds={allSounds} />}
-      {menuStatus || <Settings defaultPresets={defaultPresets} setPreset={setPreset} />}
+
+      {/* Generates preset list selector dropdown to allow quick switch between user presets if button is pressed*/}
+      {menuStatus || <Preset_Selector defaultPresets={defaultPresets} setPreset={setPreset} />}
+
+      {/* When preset selector is not activated, will generate the 3x4 soundboard*/}
       {menuStatus || <Board preset={preset} allSounds={allSounds} />}
     </div>
-  )
-
+  );
 }
 
 

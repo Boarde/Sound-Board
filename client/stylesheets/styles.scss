@@ -49,7 +49,7 @@ header {
   border: none;
 }
 // <--------LOGOUT GEAR BUTTON --------->
-#log-out-button {
+#logout-button {
   background: black;
   position: absolute;
   top: 20;
@@ -188,7 +188,7 @@ input, input[type="text"]{
 }
 // <-------- BOARD & BUTTONS --------->
 
-.board {
+.soundboard {
   display: grid;
   justify-content: center;
   align-content: center;
@@ -303,7 +303,6 @@ input, input[type="text"]{
     10px 0 40px #0ff;
 }
 
-
 .button-area:active{
   width: 100px;
   height: 100px;
@@ -320,13 +319,3 @@ input, input[type="text"]{
   filter: drop-shadow(0px 0px 5px rgb(134, 233, 225));
   transition: filter 0s;
 }
-
-
-// .test {
-//   padding: 20px;
-//   background-color:white;
-// }
-
-// input:focus {
-//   outline: none;
-// }

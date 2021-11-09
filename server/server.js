@@ -6,7 +6,7 @@ const Controller = require('./Controller');
 const PORT = 3000;
 
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 // allowing pages to show statically
 // app.get(express.static('client'));
 
