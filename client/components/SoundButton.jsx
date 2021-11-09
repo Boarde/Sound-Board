@@ -1,37 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
+// create individual sound button component for each button that play audio on click
 const SoundButton = (props) => {
-  // console.log('SOUNDBUTTON RENDERED, CHECKING PROPS: ', props)
-  
-
   const playSound = () => {
-    console.log("CLICKED");
-    let audio = new Audio(props.sound);
-    console.log("AUDIO LINK: ", props.sound);
-    audio.play()
-  }
-    //inside of onClick do something with event handler
-    //this.props.onClick()
-    return (
-      // <div className="button-wrapper">
-      //   <button
-      //   className="button-area"
-      //   onClick={() => playSound()}
-      //   >
-      //   </button>
-      // </div>
-
-
-      // CHANGED BUTTON TO DIV FOR EXPERIMENTAL BUTTON INTERACTION
-      <div className="button-wrapper">
-        <div className="button-area"
-        onClick={() => playSound()}
-        >
-        </div>
-      </div>
-        // onClick={() => /* play props.sound function */}>
-        // {/* {this.props.value} */}
-    )
-}
+    const audio = new Audio(props.sound);
+    console.log('AUDIO LINK: ', props.sound);
+    audio.play();
+  };
+  return (
+    <div className="button-wrapper">
+      <div className="button-area" onClick={() => playSound()} />
+    </div>
+  );
+};
 
 export default SoundButton;
