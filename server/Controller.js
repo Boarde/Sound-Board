@@ -2,6 +2,8 @@ const db = require('./database.js');
 
 const Controller = {};
 
+
+// get the name and link of the sound from Pokemon
 Controller.getPokemon = (req, res, next) => {
   const qString =  'SELECT pokemon.name, pokemon.link FROM pokemon';
 
@@ -22,6 +24,8 @@ Controller.getPokemon = (req, res, next) => {
     });
 };
 
+
+// get the name and link of the sound from Instruments
 Controller.getInstruments = (req, res, next) => {
   const qString =  'SELECT instruments.name, instruments.link FROM instruments';
 
@@ -40,6 +44,8 @@ Controller.getInstruments = (req, res, next) => {
     });
 };
 
+
+// get the name and link of the sound from Gaffes
 Controller.getGaffes = (req, res, next) => {
   const qString =  'SELECT gaffes.name, gaffes.link FROM gaffes';
 
@@ -59,6 +65,7 @@ Controller.getGaffes = (req, res, next) => {
     });
 };
 
+// get all the presets
 Controller.getPresets = (req, res, next) => {
   const qString =  'SELECT presets.presetname, presets.list FROM presets';
 
@@ -99,11 +106,12 @@ Controller.getPresets = (req, res, next) => {
 
 Controller.getALL = (req, res, next) => {
   console.log(req.body);
-  console.log('currently in the controller get ALl');
+  console.log('currently in the controller getALL');
   function formatData(SQL) {
     const obj ={}
     SQL.forEach((element) => {
-      obj[element.presetname] = []
+      //Does Element have both a .name and .names property? what is the difference?
+      obj[element.name] = []
       const nameArray = element.names.split('#')
       const linkArray = element.links.split('#')
       const arrayObj = []
@@ -111,23 +119,26 @@ Controller.getALL = (req, res, next) => {
         const nameLink = {}
         nameLink.name = nameArray[i]
         nameLink.link = linkArray[i]
+        // { name: 'pikachu', link: 'pikachu.wav'}
         arrayObj.push(nameLink)
       }
-      obj[element.presetname] = arrayObj
+      obj[element.name] = arrayObj // obj[element.name] = [{ name: 'pikachu', link: 'pikachu.wav'},{ name: 'pikachu', link: 'pikachu.wav'},...]
     })
     return obj;
-    //one object with 3 keys
+    //one object with all users presets
       //each key has an array of objects
         //each object has a name and link key
   }
-  let qString = `select presetsongs.presetName, STRING_AGG(presetsongs.sound, '#') AS names, STRING_AGG(soundLinks.link, '#') AS links from presetsongs
-  Left Join soundlinks
-  ON presetsongs.sound = soundLinks.sound
-  Group BY presetsongs.presetName`
+  let username = [req.body.userInfo.username]
+  console.log('this is the username in an array-------->', username)
+  // what does this query do
+  let qString = "select presets.name, STRING_AGG(presetsongs.sound, '#') AS names, STRING_AGG(soundLinks.link, '#') AS links from presets Join presetsongs ON presets.name = presetsongs.presetName Join soundlinks ON presetsongs.sound = soundLinks.sound WHERE presetsongs.username = $1 OR presetsongs.username IS NULL Group BY presets.name"
   console.log('trying to get all with the parse')
-  db.query(qString)
+  db.query(qString, username)
     .then(data => {
+      //console.log(data.rows)
       res.locals.all = formatData(data.rows);
+      //console.log(res.locals.all); -- front end NEEDS this format.
       return next();
     })
     .catch(err => {
@@ -138,10 +149,15 @@ Controller.getALL = (req, res, next) => {
       })
     })
 }
+
+// what exactly does this do -- what greater purpose does it serve?
 Controller.savePrimary = (req, res, next) => {
   //unable to do multiple queries at the same time so I need to create
   //the primary key in the preset table for better username usage
   const testing = req.body.newPreset
+  // why these index positions
+  // index 0 is preset name
+  // index 14 is username
   const names = [testing[0], testing[14]]
   let qString = "Insert INTO presets (name, username) Values ($1, $2)";
   db.query(qString, names)
@@ -158,6 +174,10 @@ Controller.savePrimary = (req, res, next) => {
 }
 Controller.savePreset = (req, res, next) => {
   const testing = req.body.newPreset;
+  // what are values $1 and $14
+  // $1 = presetName
+  // $2 - $13 soundbyte names
+  // $14 = userName
   let qString =  "Insert INTO presetSongs Values ($1, $2, $14), ($1, $3, $14), ($1, $4, $14), ($1, $5, $14), ($1, $6, $14), ($1, $7, $14), ($1, $8, $14), ($1, $9, $14), ($1, $10, $14), ($1, $11, $14), ($1, $12, $14), ($1, $13, $14);"
   // qString += `'${arr.shift()}','`;
   // qString = qString + arr.join('#') + ')';
@@ -174,6 +194,8 @@ Controller.savePreset = (req, res, next) => {
     });
 };
 
+
+// how much of this works?
 Controller.login = (req, res, next) => {
   console.log('this is the post request body', req.body.userInfo);
   const { username, password } = req.body.userInfo;
@@ -182,6 +204,7 @@ Controller.login = (req, res, next) => {
   console.log('trying to save......Adam')
   db.query(qString, [username, password])
     .then((data) => {
+      // did we grab the users presets? where do we return them?
       res.locals.loginStatus = true;
       return next();
     })
@@ -193,6 +216,9 @@ Controller.login = (req, res, next) => {
       });
     });
 };
+
+// have we seen this work?
+// seems solid
 Controller.signup = (req, res, next) => {
   console.log('this is the post request body', req.body.allInfo);
   const { username, password } = req.body.allInfo;
