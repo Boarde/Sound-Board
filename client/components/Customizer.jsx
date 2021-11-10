@@ -8,6 +8,14 @@ const Customizer = (props) => {
   const soundList = props.allSounds;
   const preset = props.preset;
 
+  // useEffect(() => {
+  //   const defaultPreset = [];
+  //   for (let i = 0; i < 12; i++) {
+  //     defaultPreset.push(currentSounds[0]);
+  //   }
+  //   setNewPreset(defaultPreset);
+  // }, []);
+
   const currentSounds = [];
   const soundsArray = () => {
     Object.keys(soundList).forEach(element => {
@@ -19,14 +27,6 @@ const Customizer = (props) => {
     }
     );
   };
-
-  useEffect(() => {
-    const defaultPreset = [];
-    for (let i = 0; i < 12; i++) {
-      defaultPreset.push(currentSounds[0]);
-    }
-    setNewPreset(defaultPreset);
-  }, []);
 
   let databaseEntry = '';
 

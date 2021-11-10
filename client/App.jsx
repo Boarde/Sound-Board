@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Board from './components/Board.jsx';
 import Playlist_Selector from './components/Playlist_Selector.jsx';
-import Customizer from './components/Customizer.jsx';
+import Customizer from './components/Customizer.jsx'
+
 import './stylesheets/styles.scss';
+
 
 function App() {
   // holds all the sounds in a playlist

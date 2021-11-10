@@ -2,51 +2,6 @@ const db = require('./database.js');
 
 const Controller = {};
 
-<<<<<<< HEAD
-
-
-
-// get all the presets
-Controller.getPresets = (req, res, next) => {
-  const qString =  'SELECT presets.presetname, presets.list FROM presets';
-
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
-      res.locals.gaffes = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getGaffes',
-        message: {err: 'Controller.getGaffes: Error'}
-      });
-    });
-};
-
-// Controller.savePreset = (req, res, next) => {
-  
-//   req.body = ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
-//   let qString =  'INSERT INTO presets VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)';
-//   // qString += `'${arr.shift()}','`;
-//   // qString = qString + arr.join('#') + ')';
-//   console.log('trying to save......')
-//   db.query(qString, req.body)
-//     .then(data => {
-//       return next();
-//     })
-//     .catch(err => {
-//       console.log("ERROR!!!");
-//       return next({
-//         log: 'Error in Controller.getGaffes',
-//         message: {err: 'Controller.getGaffes: Error'}
-//       });
-//     });
-// };
-
-=======
->>>>>>> c38b5ea8f88ac484c185b79cf4f75e3a64069762
 Controller.getALL = (req, res, next) => {
   console.log(req.body);
   console.log('currently in the controller getALL');
