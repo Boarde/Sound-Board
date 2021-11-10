@@ -2,6 +2,7 @@ const db = require('./database.js');
 
 const Controller = {};
 
+<<<<<<< HEAD
 
 
 
@@ -44,6 +45,8 @@ Controller.getPresets = (req, res, next) => {
 //     });
 // };
 
+=======
+>>>>>>> c38b5ea8f88ac484c185b79cf4f75e3a64069762
 Controller.getALL = (req, res, next) => {
   console.log(req.body);
   console.log('currently in the controller getALL');
@@ -69,7 +72,11 @@ Controller.getALL = (req, res, next) => {
       //each key has an array of objects
         //each object has a name and link key
   }
-  let username = [req.body.userInfo.username]
+  console.log('is the req.body showing', req.body.newPreset);
+  let username;
+  if (req.body.userInfo) username = [req.body.userInfo.username]
+  else username = [req.body.newPreset[13]]
+  console.log('is the req.body showing', req.body.newPreset);
   console.log('this is the username in an array-------->', username)
   // what does this query do
   let qString = "select presets.name, STRING_AGG(presetsongs.sound, '#') AS names, STRING_AGG(soundLinks.link, '#') AS links from presets Join presetsongs ON presets.name = presetsongs.presetName Join soundlinks ON presetsongs.sound = soundLinks.sound WHERE presetsongs.username = $1 OR presetsongs.username IS NULL Group BY presets.name"

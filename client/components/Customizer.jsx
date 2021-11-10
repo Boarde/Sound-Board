@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 const Customizer = (props) => {
+  // where we create a new preset
   const [newPreset, setNewPreset] = useState([]);
   const [presetName, setPresetName] = useState('');
 
   const soundList = props.allSounds;
   const preset = props.preset;
-
-  useEffect(() => {
-    const defaultPreset = [];
-    for (let i = 0; i < 12; i++) {
-      defaultPreset.push(currentSounds[0]);
-    }
-    setNewPreset(defaultPreset);
-  }, []);
-
-  let databaseEntry = '';
 
   const currentSounds = [];
   const soundsArray = () => {
@@ -29,11 +20,20 @@ const Customizer = (props) => {
     );
   };
 
+  useEffect(() => {
+    const defaultPreset = [];
+    for (let i = 0; i < 12; i++) {
+      defaultPreset.push(currentSounds[0]);
+    }
+    setNewPreset(defaultPreset);
+  }, []);
+
+  let databaseEntry = '';
+
   soundsArray();
   const formElements = currentSounds.map((element, i) => (
     <option key={`${i}`} value={element}> {element} </option>
   ));
-
 
   // POST FETCH REQUEST
   //Instead we should submit an array with the ...Object.values(newPreset) AND the links right here) 
@@ -55,9 +55,7 @@ const Customizer = (props) => {
         console.log('ERROR CREATING NEW PRESET');
         return err;
       });
-
   };
-
 
   function setPlaylist(i, e) {
     const selectedPreset = JSON.parse(JSON.stringify(newPreset));
