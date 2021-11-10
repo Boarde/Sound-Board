@@ -1,4 +1,5 @@
 const db = require('./database.js');
+const bcrypt = require ('bcryptjs');
 
 const Controller = {};
 
@@ -201,8 +202,9 @@ Controller.login = (req, res, next) => {
   const { username, password } = req.body.userInfo;
   console.log({'username': username, 'password':password});
   let qString =  'select * from users Where name = $1 AND password = $2'; //grab user presets while matching for username/pw
-  console.log('trying to save......Adam')
-  db.query(qString, [username, password])
+  const hash = bcrypt.hashSync(password, 2);
+  console.log(hash);
+  db.query(qString, [username, hash])
     .then((data) => {
       // did we grab the users presets? where do we return them?
       res.locals.loginStatus = true;
@@ -224,8 +226,8 @@ Controller.signup = (req, res, next) => {
   const { username, password } = req.body.allInfo;
   console.log(req.body.allInfo);
   let qString =  "Insert INTO users (name, password) Values ($1, $2);" //inserting username, pw, preset options
-  console.log('trying to save......Adam')
-  db.query(qString, [username, password])
+  const hash = bcrypt.hashSync(password, 2);
+  db.query(qString, [username, hash])
     .then(() => {
       return next();
     })
