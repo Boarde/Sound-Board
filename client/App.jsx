@@ -98,7 +98,7 @@ function App() {
       {loginStatus && <button className="presetSettings" onClick={() => setMenuStatus(!menuStatus)}></button>}
       
       {/* displays customizer page when button is pressed */}
-      {menuStatus && <Customizer currUser={currUser} setMenuStatus={setMenuStatus} allSounds={allSounds} />}
+      {/*menuStatus &&*/ <Customizer currUser={currUser} setMenuStatus={setMenuStatus} allSounds={allSounds} setAllSounds={setAllSounds} setPlaylists={setPlaylists}/>}
 
       {/* displays playlist slector when logged in */}
       {loginStatus && <Playlist_Selector playlists={playlists} setPreset={setPreset} />}

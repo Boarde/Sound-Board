@@ -1,122 +1,19 @@
 const db = require('./database.js');
-const bcrypt = require ('bcryptjs');
 
 const Controller = {};
-
-
-// get the name and link of the sound from Pokemon
-Controller.getPokemon = (req, res, next) => {
-  const qString =  'SELECT pokemon.name, pokemon.link FROM pokemon';
-
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
-
-      //console.log(data.rows);
-      res.locals.pokemon = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getPokemon',
-        message: {err: 'Controller.getPokemon: Error'}
-      });
-    });
-};
-
-
-// get the name and link of the sound from Instruments
-Controller.getInstruments = (req, res, next) => {
-  const qString =  'SELECT instruments.name, instruments.link FROM instruments';
-
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
-      res.locals.instruments = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getInstruments',
-        message: {err: 'Controller.getInstruments: Error'}
-      });
-    });
-};
-
-
-// get the name and link of the sound from Gaffes
-Controller.getGaffes = (req, res, next) => {
-  const qString =  'SELECT gaffes.name, gaffes.link FROM gaffes';
-
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
-      // console.log(data.rows)
-      res.locals.gaffes = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getGaffes',
-        message: {err: 'Controller.getGaffes: Error'}
-      });
-    });
-};
-
-// get all the presets
-Controller.getPresets = (req, res, next) => {
-  const qString =  'SELECT presets.presetname, presets.list FROM presets';
-
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
-      res.locals.gaffes = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getGaffes',
-        message: {err: 'Controller.getGaffes: Error'}
-      });
-    });
-};
-
-// Controller.savePreset = (req, res, next) => {
-  
-//   req.body = ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
-//   let qString =  'INSERT INTO presets VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)';
-//   // qString += `'${arr.shift()}','`;
-//   // qString = qString + arr.join('#') + ')';
-//   console.log('trying to save......')
-//   db.query(qString, req.body)
-//     .then(data => {
-//       return next();
-//     })
-//     .catch(err => {
-//       console.log("ERROR!!!");
-//       return next({
-//         log: 'Error in Controller.getGaffes',
-//         message: {err: 'Controller.getGaffes: Error'}
-//       });
-//     });
-// };
 
 Controller.getALL = (req, res, next) => {
   console.log(req.body);
   console.log('currently in the controller getALL');
   function formatData(SQL) {
-    const obj ={}
+    const obj = {}
     SQL.forEach((element) => {
       //Does Element have both a .name and .names property? what is the difference?
       obj[element.name] = []
       const nameArray = element.names.split('#')
       const linkArray = element.links.split('#')
       const arrayObj = []
-      for(let i =0; i< nameArray.length; i++) {
+      for (let i = 0; i < nameArray.length; i++) {
         const nameLink = {}
         nameLink.name = nameArray[i]
         nameLink.link = linkArray[i]
@@ -127,10 +24,14 @@ Controller.getALL = (req, res, next) => {
     })
     return obj;
     //one object with all users presets
-      //each key has an array of objects
-        //each object has a name and link key
+    //each key has an array of objects
+    //each object has a name and link key
   }
-  let username = [req.body.userInfo.username]
+  console.log('is the req.body showing', req.body.newPreset);
+  let username;
+  if (req.body.userInfo) username = [req.body.userInfo.username]
+  else username = [req.body.newPreset[13]]
+  console.log('is the req.body showing', req.body.newPreset);
   console.log('this is the username in an array-------->', username)
   // what does this query do
   let qString = "select presets.name, STRING_AGG(presetsongs.sound, '#') AS names, STRING_AGG(soundLinks.link, '#') AS links from presets Join presetsongs ON presets.name = presetsongs.presetName Join soundlinks ON presetsongs.sound = soundLinks.sound WHERE presetsongs.username = $1 OR presetsongs.username IS NULL Group BY presets.name"
@@ -144,9 +45,9 @@ Controller.getALL = (req, res, next) => {
     })
     .catch(err => {
       console.log('Error when trying to do the query for getting all')
-      return next ({
+      return next({
         log: 'Error in the Controller.getAll',
-        message: {err: 'Controller.getAll: Error'}
+        message: { err: 'Controller.getAll: Error' }
       })
     })
 }
@@ -169,7 +70,7 @@ Controller.savePrimary = (req, res, next) => {
       console.log(err.message);
       return next({
         log: 'Error in Controller.savePrimary',
-        message: {err: 'Controller.savePrimary'}
+        message: { err: 'Controller.savePrimary' }
       });
     });
 }
@@ -179,7 +80,7 @@ Controller.savePreset = (req, res, next) => {
   // $1 = presetName
   // $2 - $13 soundbyte names
   // $14 = userName
-  let qString =  "Insert INTO presetSongs Values ($1, $2, $14), ($1, $3, $14), ($1, $4, $14), ($1, $5, $14), ($1, $6, $14), ($1, $7, $14), ($1, $8, $14), ($1, $9, $14), ($1, $10, $14), ($1, $11, $14), ($1, $12, $14), ($1, $13, $14);"
+  let qString = "Insert INTO presetSongs Values ($1, $2, $14), ($1, $3, $14), ($1, $4, $14), ($1, $5, $14), ($1, $6, $14), ($1, $7, $14), ($1, $8, $14), ($1, $9, $14), ($1, $10, $14), ($1, $11, $14), ($1, $12, $14), ($1, $13, $14);"
   // qString += `'${arr.shift()}','`;
   // qString = qString + arr.join('#') + ')';
   db.query(qString, testing)
@@ -190,7 +91,7 @@ Controller.savePreset = (req, res, next) => {
       console.log(err.message);
       return next({
         log: 'Error in Controller.savePreset',
-        message: {err: 'Controller.savePreset'}
+        message: { err: 'Controller.savePreset' }
       });
     });
 };
@@ -237,7 +138,7 @@ Controller.login = (req, res, next) => {
       console.log(err.message);
       return next({
         log: 'Error in Controller.getGaffes',
-        message: {err: 'Controller.getGaffes: Error'}
+        message: { err: 'Controller.getGaffes: Error' }
       });
     });
 };
@@ -258,8 +159,7 @@ Controller.verifyUser = (req, res, next) => {
       log: 'Error in Controller.signup',
       message: {err: `${err.message}`}
     });
-  });
-}
+};
 
 Controller.signup = async (req, res, next) => {
   console.log('this is the post request body', req.body.allInfo);
