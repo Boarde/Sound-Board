@@ -39,8 +39,9 @@ const Customizer = (props) => {
   // POST FETCH REQUEST
   //Instead we should submit an array with the ...Object.values(newPreset) AND the links right here) 
   const addPreset = () => {
-    console.log(props.currUser);    props.setMenuStatus(false);
-    databaseEntry = [presetName, ...Object.values(newPreset)];
+    //console.log(props.currUser);
+    props.setMenuStatus(false);
+    databaseEntry = [presetName, ...Object.values(newPreset), props.currUser];
     console.log('databaseentry', databaseEntry);
     fetch('/savePreset', {
       method: 'POST',
@@ -48,11 +49,16 @@ const Customizer = (props) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ newPreset: [presetName, ...Object.values(newPreset), props.currUser/*, username */] })
-      //body has to be in this format { newPreset : ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy', 'test']};
+      //body has to be in this format { newPreset : ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy', USERNAME];
 
       // }
     })
-      .then(res => res)
+      .then(res => res.json())
+      .then (data => {
+        console.log(data);
+        props.setAllSounds(data);
+        props.setPlaylists(Object.keys(data));
+      })
       .catch(err => {
         console.log('ERROR CREATING NEW PRESET');
         return err;
