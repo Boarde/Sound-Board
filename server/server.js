@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const Controller = require('./Controller');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
@@ -13,8 +13,9 @@ app.use(express.urlencoded({ extended: true}));
 //getting homepage
 app.get('/', (req, res) => {
   console.log("server - root");
-  return res.status(200).sendFile(path.resolve(__dirname + '/index.html'));
+  return res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
 });
+
 
 // app.get('/all', Controller.getPokemon, Controller.getInstruments, Controller.getGaffes, (req, res) => {
 //   console.log('getting all the things'); 
@@ -45,10 +46,10 @@ app.post('/signup', Controller.signup, (req, res) => {
 
 app.use('*', (req,res) => {
   console.log("not found");
-  return res.sendStatus(404).send('Page does not exist');
+  return res.status(404).send('Page does not exist');
 });
 
 
-app.listen(PORT, () => {
+module.exports = app.listen(PORT, () => {
   console.log(`server is listening on http://localhost:${PORT}`);
 }); //listens on port 3000 -> http://localhost:3000/
