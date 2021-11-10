@@ -197,19 +197,47 @@ Controller.savePreset = (req, res, next) => {
 
 
 // how much of this works?
+// Controller.login = (req, res, next) => {
+//   const { username, password } = req.body.userInfo;
+//   console.log({'username': username, 'password':password});
+//   let qString =  "select * from users Where name = $1 AND password = $2"; //grab user presets while matching for username/pw
+//   const hash = bcrypt.hashSync(password, 2);
+//   console.log(hash);
+//   db.query(qString, [username, hash])
+//     .then((data) => {
+//       console.log('login response data', data);
+//       res.locals.loginStatus = true;
+//       return next();
+//     })
+//     .catch(err => {
+//       console.log(err.message);
+//       return next({
+//         log: 'Error in Controller.getGaffes',
+//         message: {err: 'Controller.getGaffes: Error'}
+//       });
+//     });
+// };
+
 Controller.login = (req, res, next) => {
-  console.log('this is the post request body', req.body.userInfo);
   const { username, password } = req.body.userInfo;
   console.log({'username': username, 'password':password});
-  let qString =  'select * from users Where name = $1 AND password = $2'; //grab user presets while matching for username/pw
-  const hash = bcrypt.hashSync(password, 2);
-  console.log(hash);
-  db.query(qString, [username, hash])
+  let qString =  "select * from users Where name = $1"; //grab user presets while matching for username/pw
+  // const hash = bcrypt.hashSync(password, 2);
+  // console.log(hash);
+  db.query(qString, [username])
     .then((data) => {
-      // did we grab the users presets? where do we return them?
       console.log('login response data', data);
-      res.locals.loginStatus = true;
-      return next();
+      const hash = data.rows[0].password;
+      bcrypt.compare(password, hash, (err, isMatch) => {
+        if (err) throw err;
+        else {
+          if (!isMatch) throw 'Password was incorrect';
+          else {
+            res.locals.loginStatus = true;
+            return next();
+          }
+        }
+      })
     })
     .catch(err => {
       console.log(err.message);
@@ -226,6 +254,7 @@ Controller.verifyUser = (req, res, next) => {
   let verifyAvailable = "select * from users Where name = $1";
   db.query(verifyAvailable, [username])
   .then(response => {
+    console.log(response);
     if (response.rows[0] !== undefined) throw 'Username is already taken!'
     else return next();
   })
@@ -242,19 +271,29 @@ Controller.signup = (req, res, next) => {
   console.log('this is the post request body', req.body.allInfo);
   const { username, password } = req.body.allInfo;
   let qString =  "Insert INTO users (name, password) Values ($1, $2);" //inserting username, pw, preset options
-  const hash = bcrypt.hashSync(password, 2);
-  db.query(qString, [username, hash])
-    .then((response) => {
-      console.log('promise response', response.rows);
-      return next();
+  let hash;
+  bcrypt.genSalt(2, (err, salt) => {
+    if (err) throw err;
+    else bcrypt.hash(password, salt, (err, res) => {
+      if (err) throw err;
+      else {
+        db.query(qString, [username, res])
+          .then((response) => {
+            console.log('promise response', response);
+            return next();
+          })
+          .catch(err => {
+            console.log(err.message);
+            return next({
+              log: 'Error in Controller.signup',
+              message: {err: 'Controller.signup: Error'}
+            });
+         });
+      }
     })
-    .catch(err => {
-      console.log(err.message);
-      return next({
-        log: 'Error in Controller.signup',
-        message: {err: 'Controller.signup: Error'}
-      });
-    });
+  })
+  
+  
 };
 
 
