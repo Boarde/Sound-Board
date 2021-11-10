@@ -47,7 +47,4 @@ app.use('*', (req,res) => {
   return res.status(404).send('Page does not exist');
 });
 
-
-app.listen(PORT, () => {
-  console.log(`server is listening on http://localhost:${PORT}`);
-}); //listens on port 3000 -> http://localhost:3000/
+module.exports = app; 
