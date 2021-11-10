@@ -13,13 +13,8 @@ app.use(express.urlencoded({ extended: true}));
 //getting homepage
 app.get('/', (req, res) => {
   console.log("server - root");
-<<<<<<< HEAD
-  return res.status(200).sendFile(path.resolve(__dirname, '/index.html'));
-=======
   return res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
->>>>>>> upstream/dev
 });
-
 
 // app.get('/all', Controller.getPokemon, Controller.getInstruments, Controller.getGaffes, (req, res) => {
 //   console.log('getting all the things'); 

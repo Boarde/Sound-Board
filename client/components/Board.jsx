@@ -16,7 +16,8 @@ const Board = (props) => {
     {link: 'https://www.pokezorworld.com/anime/wav/machoke.wav' },
     {link: 'https://www.imit.org.uk/sound-clips/Organ.mp3' },
     {link: 'https://www.pokezorworld.com/anime/wav/bulbasaur.wav' },
-    {link: 'https://www.pokezorworld.com/anime/wav/meowth.wav' }
+    {link: 'https://www.pokezorworld.com/anime/wav/meowth.wav' },
+    
   ];
 
   // rendering entire board

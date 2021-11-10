@@ -5,6 +5,7 @@ const Customizer = (props) => {
   const [presetName, setPresetName] = useState('');
 
   const soundList = props.allSounds;
+  const preset = props.preset;
 
   useEffect(() => {
     const defaultPreset = [];
@@ -22,7 +23,6 @@ const Customizer = (props) => {
       for (let i = 0; i < soundList[element].length; i++) {
         if (!currentSounds.includes(soundList[element][i].name)) {
           currentSounds.push(soundList[element][i].name);
-
         }
       }
     }
@@ -35,20 +35,18 @@ const Customizer = (props) => {
   ));
 
 
-
   // POST FETCH REQUEST
   //Instead we should submit an array with the ...Object.values(newPreset) AND the links right here) 
   const addPreset = () => {
-    console.log(props.currUser);    props.setMenuStatus(false);
+    props.setMenuStatus(false);
     databaseEntry = [presetName, ...Object.values(newPreset)];
-    console.log('databaseentry', databaseEntry);
     fetch('/savePreset', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ newPreset: [presetName, ...Object.values(newPreset), props.currUser/*, username */] })
-      //body has to be in this format { newPreset : ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy', 'test']};
+      //body has to be in this format { newPreset : ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
 
       // }
     })
@@ -67,10 +65,11 @@ const Customizer = (props) => {
     setNewPreset(selectedPreset);
   }
 
+  // generates 12 dropdowns 
   const presetOptions = [];
   for (let i = 0; i < 12; i++) {
     presetOptions.push(
-      <div className="customizer-dropdown-wrapper">
+      <div className="customizer-dropdown-wrapper"><div style={{color:"white"}}>{soundList[preset][i].link}</div>
         <select onChange={e => setPlaylist(i, e)} id={`${i}dropdown`} name="soundClips">
           {formElements}
         </select>
@@ -89,14 +88,11 @@ const Customizer = (props) => {
           <input onChange={(e) => setPresetName(e.target.value)} id="preset-name" type="text" required></input>
           <input type="submit"></input>
         </div>
-
         <div className="preset-wrapper">
           {presetOptions}
         </div>
-
       </form>
     </div>
-
   );
 };
 
