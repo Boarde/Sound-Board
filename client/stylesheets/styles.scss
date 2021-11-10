@@ -40,7 +40,7 @@ header {
 .presetSettings{
   position: absolute;
   top: 20;
-  right: 20;
+  right: 80;
   background: url(settings-button.png) no-repeat;
   background-size: 40px;
   width: 40px;
@@ -48,12 +48,12 @@ header {
   cursor: pointer;
   border: none;
 }
-// <--------LOGOUT GEAR BUTTON --------->
+// <--------LOGOUT BUTTON --------->
 #logout-button {
   background: black;
   position: absolute;
   top: 20;
-  right: 80;
+  right: 20;
   background: url(logout.png) no-repeat;
   background-size: 40px;
   width: 40px;
@@ -62,11 +62,11 @@ header {
   border: none;
 }
 
-// <--------LOGIN GEAR BUTTON --------->
+// <--------LOGIN BUTTON --------->
 #login-form {
   position: absolute;
   top: 20;
-  right: 80;
+  right: 20;
   color:white;
   background: url(login.png) no-repeat;
   background-size: 40px;
@@ -93,6 +93,8 @@ header {
 .login-button-click{
     display: inline-block;
     background-color: violet;
+    width: 80px;
+    margin-right: 10px;
     font-family: 'Orbitron', sans-serif;
 
 }

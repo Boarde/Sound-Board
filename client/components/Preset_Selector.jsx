@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-const Preset_Selector = (props) => {
-  // POPULATING OPTIONS DROPDOWN
-  const options = props.defaultPresets.map((preset, i) => {
+const Playlist_Selector = (props) => {
+  // creates dropdown listings of all the playlist imported from user's account
+  const options = props.playlists.map((preset, i) => {
     return <option key={i} value={preset}> {preset} </option>;
   });
 
+  // renders the drop downlist
   return (
     <div className="settings-wrapper" >
       <select onChange={e => props.setPreset(e.target.value)}>
@@ -15,4 +16,4 @@ const Preset_Selector = (props) => {
   );
 };
 
-export default Preset_Selector;
+export default Playlist_Selector;

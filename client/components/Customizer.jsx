@@ -75,7 +75,7 @@ const Customizer = (props) => {
           {formElements}
         </select>
       </div>
-    )
+    );
   }
 
   return (
@@ -97,7 +97,7 @@ const Customizer = (props) => {
       </form>
     </div>
 
-  )
-}
+  );
+};
 
 export default Customizer;
