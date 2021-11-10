@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Board from './components/Board.jsx';
+<<<<<<< HEAD
 import Playlist_Selector from './components/Preset_Selector.jsx';
 import Customizer from './components/Customizer.jsx';
+=======
+import Playlist_Selector from './components/Playlist_Selector.jsx';
+import Customizer from './components/Customizer.jsx'
+>>>>>>> upstream/dev
 
 import './stylesheets/styles.scss';
 
@@ -98,7 +103,10 @@ function App() {
       
       {/* displays customizer page when button is pressed */}
       {menuStatus && <Customizer currUser={currUser} setMenuStatus={setMenuStatus} allSounds={allSounds} />}
+<<<<<<< HEAD
       
+=======
+>>>>>>> upstream/dev
 
       {/* displays playlist slector when logged in */}
       {loginStatus && <Playlist_Selector playlists={playlists} setPreset={setPreset} />}
