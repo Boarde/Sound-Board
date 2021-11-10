@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SoundButton from './SoundButton.jsx';
 
+
 const Board = (props) => {
   const preset = props.preset;
   // default sounds to populate board when user does not have an account or is not logged in
@@ -24,7 +25,7 @@ const Board = (props) => {
     <div className="soundboard">
       {sounds.map((el, i) => <SoundButton id={i} key={i} sound={ sounds[i].link } />)}
     </div>
-  );
-};
+  )
+}
 
 export default Board;

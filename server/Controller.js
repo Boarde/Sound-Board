@@ -3,108 +3,6 @@ const bcrypt = require ('bcryptjs');
 
 const Controller = {};
 
-
-// get the name and link of the sound from Pokemon
-Controller.getPokemon = (req, res, next) => {
-  const qString =  'SELECT pokemon.name, pokemon.link FROM pokemon';
-
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
-
-      //console.log(data.rows);
-      res.locals.pokemon = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getPokemon',
-        message: {err: 'Controller.getPokemon: Error'}
-      });
-    });
-};
-
-
-// get the name and link of the sound from Instruments
-Controller.getInstruments = (req, res, next) => {
-  const qString =  'SELECT instruments.name, instruments.link FROM instruments';
-
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
-      res.locals.instruments = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getInstruments',
-        message: {err: 'Controller.getInstruments: Error'}
-      });
-    });
-};
-
-
-// get the name and link of the sound from Gaffes
-Controller.getGaffes = (req, res, next) => {
-  const qString =  'SELECT gaffes.name, gaffes.link FROM gaffes';
-
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
-      // console.log(data.rows)
-      res.locals.gaffes = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getGaffes',
-        message: {err: 'Controller.getGaffes: Error'}
-      });
-    });
-};
-
-// get all the presets
-Controller.getPresets = (req, res, next) => {
-  const qString =  'SELECT presets.presetname, presets.list FROM presets';
-
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
-      res.locals.gaffes = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getGaffes',
-        message: {err: 'Controller.getGaffes: Error'}
-      });
-    });
-};
-
-// Controller.savePreset = (req, res, next) => {
-  
-//   req.body = ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy'];
-//   let qString =  'INSERT INTO presets VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)';
-//   // qString += `'${arr.shift()}','`;
-//   // qString = qString + arr.join('#') + ')';
-//   console.log('trying to save......')
-//   db.query(qString, req.body)
-//     .then(data => {
-//       return next();
-//     })
-//     .catch(err => {
-//       console.log("ERROR!!!");
-//       return next({
-//         log: 'Error in Controller.getGaffes',
-//         message: {err: 'Controller.getGaffes: Error'}
-//       });
-//     });
-// };
-
 Controller.getALL = (req, res, next) => {
   console.log(req.body);
   console.log('currently in the controller getALL');
@@ -130,7 +28,11 @@ Controller.getALL = (req, res, next) => {
       //each key has an array of objects
         //each object has a name and link key
   }
-  let username = [req.body.userInfo.username]
+  console.log('is the req.body showing', req.body.newPreset);
+  let username;
+  if (req.body.userInfo) username = [req.body.userInfo.username]
+  else username = [req.body.newPreset[13]]
+  console.log('is the req.body showing', req.body.newPreset);
   console.log('this is the username in an array-------->', username)
   // what does this query do
   let qString = "select presets.name, STRING_AGG(presetsongs.sound, '#') AS names, STRING_AGG(soundLinks.link, '#') AS links from presets Join presetsongs ON presets.name = presetsongs.presetName Join soundlinks ON presetsongs.sound = soundLinks.sound WHERE presetsongs.username = $1 OR presetsongs.username IS NULL Group BY presets.name"
@@ -159,7 +61,7 @@ Controller.savePrimary = (req, res, next) => {
   // why these index positions
   // index 0 is preset name
   // index 14 is username
-  const names = [testing[0], testing[14]]
+  const names = [testing[0], testing[13]]
   let qString = "Insert INTO presets (name, username) Values ($1, $2)";
   db.query(qString, names)
     .then(() => {
