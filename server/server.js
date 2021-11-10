@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const Controller = require('./Controller');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
@@ -30,7 +30,7 @@ app.post('/all', Controller.getALL, (req, res)=> {
 
 app.post('/savePreset', Controller.savePrimary, Controller.savePreset, Controller.getALL, (req, res) => {
   console.log('sent preset to db');
-  return res.sendStatus(200);
+  return res.status(200);
 });
 
 app.post('/login', Controller.login, Controller.getALL, (req, res) => {
@@ -40,12 +40,11 @@ app.post('/login', Controller.login, Controller.getALL, (req, res) => {
 
 app.post('/signup', Controller.signup, (req, res) => {
   console.log('signed up new user');
-  return res.sendStatus(200);
+  return res.status(200);
 });
 
 app.use('*', (req,res) => {
-  console.log("not found");
-  return res.sendStatus(404).send('Page does not exist');
+  return res.status(404).send('Page does not exist');
 });
 
 
