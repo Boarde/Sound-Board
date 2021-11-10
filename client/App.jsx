@@ -4,6 +4,9 @@ import Board from './components/Board.jsx'; // Draws the entire board and passes
 import Preset_Selector from './components/Preset_Selector.jsx'; // Generates preset list above soundboard buttons 
 import Login from './components/Login.jsx';
 import Customizer from './components/Customizer.jsx';
+import Board from './components/Board.jsx';
+import Preset_Selector from './components/Preset_Selector.jsx';
+import Customizer from './components/Customizer.jsx'
 
 import './stylesheets/styles.scss';
 
