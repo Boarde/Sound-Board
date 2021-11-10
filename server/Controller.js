@@ -74,26 +74,78 @@ Controller.savePrimary = (req, res, next) => {
       });
     });
 }
-Controller.savePreset = (req, res, next) => {
-  const testing = req.body.newPreset;
-  // what are values $1 and $14
-  // $1 = presetName
-  // $2 - $13 soundbyte names
-  // $14 = userName
-  let qString = "Insert INTO presetSongs Values ($1, $2, $14), ($1, $3, $14), ($1, $4, $14), ($1, $5, $14), ($1, $6, $14), ($1, $7, $14), ($1, $8, $14), ($1, $9, $14), ($1, $10, $14), ($1, $11, $14), ($1, $12, $14), ($1, $13, $14);"
-  // qString += `'${arr.shift()}','`;
-  // qString = qString + arr.join('#') + ')';
-  db.query(qString, testing)
+
+Controller.savePreset = async (req, res, next) => {
+  // check if preset already exists in DB
+  let findPresetQuery = `SELECT * FROM presetsongs WHERE presetname = $1`
+  const findPreset = await db.query(findPresetQuery, [req.body.newPreset[0]])
+
+  // if existing preset exists in database, then update database
+  // else, create new presetSongs 
+  if (findPreset.rowCount > 0) {
+    console.log('UPDATING PRESETS')
+    // let updateString =  `UPDATE presetSongs SET sound = $2 WHERE presetname = $1 AND username = $14 AND index = 1;
+    //   UPDATE presetSongs SET sound = $3 WHERE presetname = $1 AND username = $14 AND index = 2;
+    //   UPDATE presetSongs SET sound = $4 WHERE presetname = $1 AND username = $14 AND index = 3;
+    //   UPDATE presetSongs SET sound = $5 WHERE presetname = $1 AND username = $14 AND index = 4;
+    //   UPDATE presetSongs SET sound = $6 WHERE presetname = $1 AND username = $14 AND index = 5;
+    //   UPDATE presetSongs SET sound = $7 WHERE presetname = $1 AND username = $14 AND index = 6;
+    //   UPDATE presetSongs SET sound = $8 WHERE presetname = $1 AND username = $14 AND index = 7;
+    //   UPDATE presetSongs SET sound = $9 WHERE presetname = $1 AND username = $14 AND index = 8;
+    //   UPDATE presetSongs SET sound = $10 WHERE presetname = $1 AND username = $14 AND index = 9;
+    //   UPDATE presetSongs SET sound = $11 WHERE presetname = $1 AND username = $14 AND index = 10;
+    //   UPDATE presetSongs SET sound = $12 WHERE presetname = $1 AND username = $14 AND index = 11;
+    //   UPDATE presetSongs SET sound = $13 WHERE presetname = $1 AND username = $14 AND index = 12;
+    // `
+    let update = req.body.newPreset;
+    update.pop();
+
+    let updateString = `UPDATE presetSongs 
+    SET sound = CASE index 
+    WHEN 1 THEN $2 
+    WHEN 2 THEN $3 
+    WHEN 3 THEN $4 
+    WHEN 4 THEN $5 
+    WHEN 5 THEN $6 
+    WHEN 6 THEN $7 
+    WHEN 7 THEN $8 
+    WHEN 8 THEN $9 
+    WHEN 9 THEN $10 
+    WHEN 10 THEN $11
+    WHEN 11 THEN $12
+    WHEN 12 THEN $13 END 
+    WHERE index IN(1,2,3,4,5,6,7,8,9,10,11,12)
+    AND presetname = $1`
+
+    db.query(updateString, update)
     .then(() => {
       return next();
     })
     .catch(err => {
       console.log(err.message);
       return next({
-        log: 'Error in Controller.savePreset',
-        message: { err: 'Controller.savePreset' }
+        log: 'Error in Controller.savePreset - updating database',
+        message: {err: 'Controller.savePreset - updating database'}
       });
     });
+  } else {
+    const testing = req.body.newPreset;
+    console.log('CREATING NEW PRESETS')
+    let qString =  "Insert INTO presetSongs Values ($1, $2, $14, 1), ($1, $3, $14, 2), ($1, $4, $14, 3), ($1, $5, $14, 4), ($1, $6, $14, 5), ($1, $7, $14, 6), ($1, $8, $14, 7), ($1, $9, $14, 8), ($1, $10, $14, 9), ($1, $11, $14, 10), ($1, $12, $14, 11), ($1, $13, $14, 12);"
+    // qString += `'${arr.shift()}','`;
+    // qString = qString + arr.join('#') + ')';
+    db.query(qString, testing)
+      .then(() => {
+        return next();
+      })
+      .catch(err => {
+        console.log(err.message);
+        return next({
+          log: 'Error in Controller.savePreset - creating in database',
+          message: {err: 'Controller.savePreset - creating in database'}
+        });
+      });
+  }
 };
 
 
@@ -151,7 +203,7 @@ Controller.login = (req, res, next) => {
 };
 
 
-Controller.verifyUser = (req, res, next) => {
+Controller.verifyUser = ((req, res, next) => {
   const { username } = req.body.allInfo;
   let verifyAvailable = "select * from users Where name = $1";
   db.query(verifyAvailable, [username])
@@ -166,7 +218,8 @@ Controller.verifyUser = (req, res, next) => {
       log: 'Error in Controller.signup',
       message: {err: `${err.message}`}
     });
-};
+});
+})
 
 Controller.signup = (req, res, next) => {
   console.log('this is the post request body', req.body.allInfo);
@@ -194,6 +247,5 @@ Controller.signup = (req, res, next) => {
     })
   })
 };
-
 
 module.exports = Controller;
