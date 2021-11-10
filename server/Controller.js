@@ -31,7 +31,7 @@ Controller.getALL = (req, res, next) => {
   console.log('is the req.body showing', req.body.newPreset);
   let username;
   if (req.body.userInfo) username = [req.body.userInfo.username]
-  else username = [req.body.newPreset[0]]
+  else username = [req.body.newPreset[13]]
   console.log('is the req.body showing', req.body.newPreset);
   console.log('this is the username in an array-------->', username)
   // what does this query do
