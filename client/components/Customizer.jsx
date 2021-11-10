@@ -1,10 +1,12 @@
+import { connection } from 'mongoose';
 import React, { useState, useEffect } from 'react';
 
 const Customizer = (props) => {
+  const soundList = props.allSounds;
+  const loginStatus = props.loginStatus;
   const [newPreset, setNewPreset] = useState([]);
   const [presetName, setPresetName] = useState('');
-
-  const soundList = props.allSounds;
+  const [temp, setTemp] = useState([]);
 
   useEffect(() => {
     const defaultPreset = [];
@@ -30,9 +32,6 @@ const Customizer = (props) => {
   };
 
   soundsArray();
-
-
-
 
   // POST FETCH REQUEST
   //Instead we should submit an array with the ...Object.values(newPreset) AND the links right here) 
@@ -64,22 +63,30 @@ const Customizer = (props) => {
 
   };
 
-
+  //
   function setPlaylist(i, e) {
     const selectedPreset = JSON.parse(JSON.stringify(newPreset));
     selectedPreset[i] = e.target.value;
     setNewPreset(selectedPreset);
   }
 
+  /***** PROBLEM AREA ******/
+  // if(loginStatus) {
+  //   setTemp(soundList[Object.keys(soundList)[0]]);
+  //   console.log(temp[0].name);
+  // }
+    
+  //preset dropdown
   const presetOptions = [];
   for (let i = 0; i < 12; i++) {
     presetOptions.push(
       <div className="customizer-dropdown-wrapper">
+        {loginStatus && <div style={{color:'white'}}>test</div>}
         <select onChange={e => setPlaylist(i, e)} id={`${i}dropdown`} name="soundClips">
           {currentSounds.map((element, i) => (<option key={`${i}`} value={element}> {element} </option>))}
         </select>
       </div>
-    )
+    );
   }
 
   return (
@@ -101,7 +108,7 @@ const Customizer = (props) => {
       </form>
     </div>
 
-  )
-}
+  );
+};
 
 export default Customizer;
