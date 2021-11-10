@@ -1,5 +1,4 @@
 const db = require('./database.js');
-const bcrypt = require ('bcryptjs');
 
 const Controller = {};
 
@@ -7,14 +6,14 @@ Controller.getALL = (req, res, next) => {
   console.log(req.body);
   console.log('currently in the controller getALL');
   function formatData(SQL) {
-    const obj ={}
+    const obj = {}
     SQL.forEach((element) => {
       //Does Element have both a .name and .names property? what is the difference?
       obj[element.name] = []
       const nameArray = element.names.split('#')
       const linkArray = element.links.split('#')
       const arrayObj = []
-      for(let i =0; i< nameArray.length; i++) {
+      for (let i = 0; i < nameArray.length; i++) {
         const nameLink = {}
         nameLink.name = nameArray[i]
         nameLink.link = linkArray[i]
@@ -25,8 +24,8 @@ Controller.getALL = (req, res, next) => {
     })
     return obj;
     //one object with all users presets
-      //each key has an array of objects
-        //each object has a name and link key
+    //each key has an array of objects
+    //each object has a name and link key
   }
   console.log('is the req.body showing', req.body.newPreset);
   let username;
@@ -46,9 +45,9 @@ Controller.getALL = (req, res, next) => {
     })
     .catch(err => {
       console.log('Error when trying to do the query for getting all')
-      return next ({
+      return next({
         log: 'Error in the Controller.getAll',
-        message: {err: 'Controller.getAll: Error'}
+        message: { err: 'Controller.getAll: Error' }
       })
     })
 }
@@ -61,7 +60,7 @@ Controller.savePrimary = (req, res, next) => {
   // why these index positions
   // index 0 is preset name
   // index 14 is username
-  const names = [testing[0], testing[13]]
+  const names = [testing[0], testing[14]]
   let qString = "Insert INTO presets (name, username) Values ($1, $2)";
   db.query(qString, names)
     .then(() => {
@@ -71,7 +70,7 @@ Controller.savePrimary = (req, res, next) => {
       console.log(err.message);
       return next({
         log: 'Error in Controller.savePrimary',
-        message: {err: 'Controller.savePrimary'}
+        message: { err: 'Controller.savePrimary' }
       });
     });
 }
@@ -151,79 +150,102 @@ Controller.savePreset = async (req, res, next) => {
 
 
 // how much of this works?
+// Controller.login = (req, res, next) => {
+//   const { username, password } = req.body.userInfo;
+//   console.log({'username': username, 'password':password});
+//   let qString =  "select * from users Where name = $1 AND password = $2"; //grab user presets while matching for username/pw
+//   const hash = bcrypt.hashSync(password, 2);
+//   console.log(hash);
+//   db.query(qString, [username, hash])
+//     .then((data) => {
+//       console.log('login response data', data);
+//       res.locals.loginStatus = true;
+//       return next();
+//     })
+//     .catch(err => {
+//       console.log(err.message);
+//       return next({
+//         log: 'Error in Controller.getGaffes',
+//         message: {err: 'Controller.getGaffes: Error'}
+//       });
+//     });
+// };
+
 Controller.login = (req, res, next) => {
-  console.log('this is the post request body', req.body.userInfo);
   const { username, password } = req.body.userInfo;
   console.log({'username': username, 'password':password});
-  let qString =  'select * from users Where name = $1 AND password = $2'; //grab user presets while matching for username/pw
-  const hash = bcrypt.hashSync(password, 2);
-  console.log(hash);
-  db.query(qString, [username, hash])
+  let qString =  "select * from users Where name = $1"; //grab user presets while matching for username/pw
+  // const hash = bcrypt.hashSync(password, 2);
+  // console.log(hash);
+  db.query(qString, [username])
+
     .then((data) => {
-      // did we grab the users presets? where do we return them?
-      res.locals.loginStatus = true;
-      return next();
+      console.log('login response data', data);
+      const hash = data.rows[0].password;
+      bcrypt.compare(password, hash, (err, isMatch) => {
+        if (err) throw err;
+        else {
+          if (!isMatch) throw 'Password was incorrect';
+          else {
+            res.locals.loginStatus = true;
+            return next();
+          }
+        }
+      })
     })
     .catch(err => {
       console.log(err.message);
       return next({
         log: 'Error in Controller.getGaffes',
-        message: {err: 'Controller.getGaffes: Error'}
+        message: { err: 'Controller.getGaffes: Error' }
       });
     });
 };
 
-// have we seen this work?
-// seems solid
+
+Controller.verifyUser = ((req, res, next) => {
+  const { username } = req.body.allInfo;
+  let verifyAvailable = "select * from users Where name = $1";
+  db.query(verifyAvailable, [username])
+  .then(response => {
+    console.log(response);
+    if (response.rows[0] !== undefined) throw 'Username is already taken!'
+    else return next();
+  })
+  .catch(err => {
+    console.log('error');
+    return next({
+      log: 'Error in Controller.signup',
+      message: {err: `${err.message}`}
+    });
+});
+})
+
 Controller.signup = (req, res, next) => {
   console.log('this is the post request body', req.body.allInfo);
   const { username, password } = req.body.allInfo;
-  console.log(req.body.allInfo);
   let qString =  "Insert INTO users (name, password) Values ($1, $2);" //inserting username, pw, preset options
-  const hash = bcrypt.hashSync(password, 2);
-  db.query(qString, [username, hash])
-    .then(() => {
-      return next();
+  let hash;
+  bcrypt.genSalt(2, (err, salt) => {
+    if (err) throw err;
+    else bcrypt.hash(password, salt, (err, res) => {
+      if (err) throw err;
+      else {
+        db.query(qString, [username, res])
+          .then((response) => {
+            console.log('promise response', response);
+            return next();
+          })
+          .catch(err => {
+            console.log(err.message);
+            return next({
+              log: 'Error in Controller.signup',
+              message: {err: 'Controller.signup: Error'}
+            });
+         });
+      }
     })
-    .catch(err => {
-      console.log(err.message);
-      return next({
-        log: 'Error in Controller.signup',
-        message: {err: 'Controller.signup: Error'}
-      });
-    });
+  })
 };
-
-Controller.changePlaylist = (req, res, next) => {
-  const testing = req.body.newPreset;
-  // what are values $1 and $14
-  // $1 = presetName
-  // $2 - $13 soundbyte names
-  // $14 = userName
-  let qString =  `UPDATE presetSongs SET 'sound' = $2 WHERE presetname = '$1' AND username = $14 AND index = 1;
-                  UPDATE presetSongs SET 'sound' = $3 WHERE presetname = '$1' AND username = $14 AND index = 2;
-                  UPDATE presetSongs SET 'sound' = $4 WHERE presetname = '$1' AND username = $14 AND index = 3;
-                  UPDATE presetSongs SET 'sound' = $5 WHERE presetname = '$1' AND username = $14 AND index = 4;
-                  UPDATE presetSongs SET 'sound' = $6 WHERE presetname = '$1' AND username = $14 AND index = 5;
-                  UPDATE presetSongs SET 'sound' = $7 WHERE presetname = '$1' AND username = $14 AND index = 6;
-                  UPDATE presetSongs SET 'sound' = $8 WHERE presetname = '$1' AND username = $14 AND index = 7;
-                  UPDATE presetSongs SET 'sound' = $9 WHERE presetname = '$1' AND username = $14 AND index = 8;
-                  UPDATE presetSongs SET 'sound' = $10 WHERE presetname = '$1' AND username = $14 AND index = 9;
-                  UPDATE presetSongs SET 'sound' = $11 WHERE presetname = '$1' AND username = $14 AND index = 10;
-                  UPDATE presetSongs SET 'sound' = $12 WHERE presetname = '$1' AND username = $14 AND index = 11;
-                  UPDATE presetSongs SET 'sound' = $13 WHERE presetname = '$1' AND username = $14 AND index = 12;
-                  `
-  db.query(qString, testing)
-    .then(() => {
-      return next();
-    })
-    .catch(err => {
-      console.log(err.message);
-      return next({
-        log: 'Error in Controller.changePlaylist',
-        message: {err: 'Controller.changePlaylist'}
-      });
-    });
-}
 
 module.exports = Controller;
