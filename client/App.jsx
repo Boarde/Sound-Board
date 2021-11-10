@@ -3,7 +3,6 @@ import Board from './components/Board.jsx';
 import Preset_Selector from './components/Preset_Selector.jsx';
 import Customizer from './components/Customizer.jsx'
 
-
 import './stylesheets/styles.scss';
 
 function App() {
