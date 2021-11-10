@@ -2,35 +2,29 @@ import React, { useState, useEffect } from 'react';
 import SoundButton from './SoundButton.jsx';
 
 const Board = (props) => {
-  const allSoundButtons = [];
   const preset = props.preset;
-  console.log('PRESET CHANGED', preset)
-  //because of an issue where props.allSounds is rendering after the sounds constant is initialized
-  //we are initializing it to an empty array in case
-  const sounds = props.allSounds[preset] || [];
-  console.log('THIS IS THE SOUND FROM PRESET, ', sounds);
-  const defaultSound = 'https://www.myinstants.com/media/sounds/overwatch-boop-sombra.mp3';
+  // default sounds to populate board when user does not have an account or is not logged in
+  const sounds = props.allSounds[preset] || [
+    {link: 'https://www.myinstants.com/media/sounds/overwatch-boop-sombra.mp3' },
+    {link: 'https://www.pokezorworld.com/anime/wav/pikach.wav' },
+    {link: 'https://quicksounds.com/uploads/tracks/155995082_386652093_1130616536.mp3' },
+    {link: 'https://www.pokezorworld.com/anime/wav/whosthatpokemon.wav' },
+    {link: 'https://quicksounds.com/uploads/tracks/1276474019_2059256748_1376796276.mp3' },
+    {link: 'https://www.imit.org.uk/sound-clips/Whip.mp3' },
+    {link: 'https://quicksounds.com/uploads/tracks/684591523_732065353_968365190.mp3' },
+    {link: 'https://www.pokezorworld.com/anime/wav/charmander.wav' },
+    {link: 'https://www.pokezorworld.com/anime/wav/machoke.wav' },
+    {link: 'https://www.imit.org.uk/sound-clips/Organ.mp3' },
+    {link: 'https://www.pokezorworld.com/anime/wav/bulbasaur.wav' },
+    {link: 'https://www.pokezorworld.com/anime/wav/meowth.wav' }
+  ];
 
-  // CONDITIONAL LOGIC TO CHANGE BUTTONS RENDERED DEPENDING ON PRESET
-  // PRESET CHANGES HAPPEN IN SETTINGS.JSX
-  
-  // TESTING BUTTON RENDERING
-  const renderButtons = () => {
-    for (let i = 0; i < 12; i++) {
-      if (sounds[i] !== undefined) {
-        allSoundButtons.push(<SoundButton id={i} key={i} sound={ sounds[i].link } />)
-      } else {
-        allSoundButtons.push(<SoundButton id={i} key={i} sound={ defaultSound } />)
-      }
-    }
-  }
-  renderButtons();
- 
+  // rendering entire board
   return (
-    <div className="board">
-      { allSoundButtons }
+    <div className="soundboard">
+      {sounds.map((el, i) => <SoundButton id={i} key={i} sound={ sounds[i].link } />)}
     </div>
-  )
-}
+  );
+};
 
 export default Board;

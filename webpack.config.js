@@ -46,7 +46,7 @@ module.exports = {
     //port: 9000,
     proxy: {
       '/': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3000/',
         secure: false,
       }
     }

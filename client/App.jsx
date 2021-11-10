@@ -1,59 +1,115 @@
 import React, { useState, useEffect } from 'react';
 import Board from './components/Board.jsx';
-import Settings from './components/Settings.jsx';
+import Playlist_Selector from './components/Playlist_Selector.jsx';
+import Customizer from './components/Customizer.jsx'
+
 import './stylesheets/styles.scss';
 
 
 function App() {
-  // const [state, setState] = useState(initialState);
+  // holds all the sounds in a playlist
   const [allSounds, setAllSounds] = useState([]);
-  const [preset, setPreset] = useState('pokemon'); // initialize to pokemon
-  const [defaultPresets] = useState([
-    'pokemon',
-    'instruments',
-    'gaffes'
-  ]);
-  
-  // tables = ['all','/pokemon', '/instruments', '/gaffes']
-  // /all route => grabbing all the presets just "cache"
-  // subsequent routes just gives you a list of names under each category
-  // this.state{
-  //  all:{name: links}
-  // pokemon : [pikachu,charmander...]
-  // instruments : [drum...]
-  // gaffes: [wahwah...]
-  //}
+  // holds all the playlists
+  const [preset, setPreset] = useState('');
+  // STATE FOR CONDITIONAL RENDERING BOARD VS MENU
+  const [menuStatus, setMenuStatus] = useState(false);
+  // holds list of playlists 
+  const [playlists, setPlaylists] = useState([]);
+  // conditional for showing login form
+  const [showLogin, setShowLogin] = useState(false);
+  // Saving username and password in States
+  const [currUser, setCurrUser] = useState(null);
+  const [password, setPassword] = useState('');
+  const [loginStatus, setStatus] = useState(false);
 
-  // useEffect is like componentDidMount componentDidUnmount
-  useEffect(() => {
-    //tables.forEach(table => {
-    fetch('/all', {
-      method: 'GET',
+  // account settings - sign up, log in, log out
+  const postSignUp = () => {
+    fetch('/signup', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      body: JSON.stringify({ allInfo: { username: currUser, password: password } })
+      //const { username, password } = req.body.allInfo;
+    })
+      .then(res => {
+        setCurrUser(currUser);
+      })
+      .catch(err => {
+        console.log('Error sign up', err);
+      });
+  };
+
+  const postLogIn = () => {
+    fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userInfo: { username: currUser, password: password } })
     })
       .then(res => res.json())
       .then(data => {
-        console.log('This is our data =>', data);
+        setCurrUser(currUser);
         setAllSounds(data);
+        setShowLogin(false);
+        setStatus(true);
+        setPlaylists(Object.keys(data));
       })
       .catch(err => {
-        console.log("Error fetching request from back end");
+        console.log('Error logging in user', err);
       });
-  }, []);
+  };
+
+  const logOut = () => {
+    setCurrUser(null);
+    setPreset('');
+    setAllSounds([]);
+    setPlaylists['default'];
+    setStatus(false);
+    setMenuStatus(false);
+  };
+
+  // render login form
+  const loginForm =
+    <div key="login" className="login-wrapper">
+      <form>
+        <div id="login-input">Username: <input onChange={e => setCurrUser(e.target.value)} type="text" required></input></div>
+        <div id="login-input">Password: <input onChange={e => setPassword(e.target.value)} type="password" required></input></div>
+        <div className="outer">
+          <button className="login-button-click" onClick={e => { e.preventDefault(); postLogIn(); }}>Log In</button>
+          <button className="login-button-click" onClick={postSignUp}>Sign Up</button>
+        </div>
+      </form>
+    </div>;
 
 
 
   return (
     //load user settings and render the board
     <div className="app-wrapper">
-      <Settings defaultPresets={ defaultPresets } setPreset={ setPreset } />
-      <Board preset={ preset } allSounds={ allSounds } />
+      {/* displays log in icon while user is not logged in */}
+      {!loginStatus && <button id="login-form" onClick={() => setShowLogin(!showLogin)}></button>}
+
+      {/* displays login form when button is pressed*/}
+      {showLogin && loginForm}
+
+      {/* displays gear for the settings when logged in */}
+      {loginStatus && <button className="presetSettings" onClick={() => setMenuStatus(!menuStatus)}></button>}
+      
+      {/* displays customizer page when button is pressed */}
+      {menuStatus && <Customizer currUser={currUser} setMenuStatus={setMenuStatus} allSounds={allSounds} />}
+
+      {/* displays playlist slector when logged in */}
+      {loginStatus && <Playlist_Selector playlists={playlists} setPreset={setPreset} />}
+      
+      {/* most important item - the sound board */}
+      {menuStatus || <Board preset={preset} allSounds={allSounds} />}
+      
+      {/* displays logout icon when logged in */}
+      {loginStatus && <button id="logout-button" onClick={logOut}></button>}
     </div>
-  )
-
+  );
 }
-
 
 export default App;
