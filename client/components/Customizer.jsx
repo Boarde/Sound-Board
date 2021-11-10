@@ -6,7 +6,6 @@ const Customizer = (props) => {
 
   const soundList = props.allSounds;
 
-
   useEffect(() => {
     const defaultPreset = [];
     for (let i = 0; i < 12; i++) {
@@ -23,6 +22,7 @@ const Customizer = (props) => {
       for (let i = 0; i < soundList[element].length; i++) {
         if (!currentSounds.includes(soundList[element][i].name)) {
           currentSounds.push(soundList[element][i].name);
+
         }
       }
     }
@@ -61,6 +61,7 @@ const Customizer = (props) => {
 
   };
 
+
   function setPlaylist(i, e) {
     const selectedPreset = JSON.parse(JSON.stringify(newPreset));
     selectedPreset[i] = e.target.value;
@@ -85,7 +86,7 @@ const Customizer = (props) => {
         addPreset();
       }}>
         <div className="preset-form">
-          <label htmlFor="preset-name" >Preset Name:     </label>
+          <label htmlFor="preset-name" style={{ color: 'white' }} >Preset Name:     </label>
           <input onChange={(e) => setPresetName(e.target.value)} id="preset-name" type="text" required></input>
           <input type="submit"></input>
         </div>

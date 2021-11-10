@@ -18,8 +18,6 @@ const Board = (props) => {
     {link: 'https://www.pokezorworld.com/anime/wav/bulbasaur.wav' },
     {link: 'https://www.pokezorworld.com/anime/wav/meowth.wav' }
   ];
-      
-  // 
 
   return (
     <div className="soundboard">

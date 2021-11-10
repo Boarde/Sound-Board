@@ -5,7 +5,6 @@ import Customizer from './components/Customizer.jsx';
 
 import './stylesheets/styles.scss';
 
-
 function App() {
   // holds all the sounds in a playlist
   const [allSounds, setAllSounds] = useState([]);
