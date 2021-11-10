@@ -23,4 +23,43 @@ describe('Route integration', () => {
       });
     });
   });
+
+  describe('/savePreset', () => {
+    describe('POST', () => {
+      it('responds with 200 status', () => {
+        return request(server)
+          .post('/savePreset')
+          .send({
+            newPreset: [
+              "Jennifer's New Playlist",
+              'what_are_those',
+              'fbi',
+              'what_are_those',
+              'what_are_those',
+              'what_are_those',
+              'what_are_those',
+              'fbi',
+              'what_are_those',
+              'what_are_those',
+              'what_are_those',
+              'what_are_those',
+              'what_are_those',
+              'test'
+            ]
+          })
+          .expect(200);
+      });
+    });
+
+    describe('/login', () => {
+      describe('POST', () => {
+        it('responds with 200 status', () => {
+          return request(server)
+            .post('/login')
+            .send({ userInfo: { username: 'test', password: 'testtest' } })
+            .expect(200);
+        });
+      });
+    });
+  });
 });

@@ -4,66 +4,66 @@ const Controller = {};
 
 
 // get the name and link of the sound from Pokemon
-Controller.getPokemon = (req, res, next) => {
-  const qString =  'SELECT pokemon.name, pokemon.link FROM pokemon';
+// Controller.getPokemon = (req, res, next) => {
+//   const qString =  'SELECT pokemon.name, pokemon.link FROM pokemon';
 
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
+//   db.query(qString)
+//     //grabbing characters from the DB
+//     .then(data => {
 
-      //console.log(data.rows);
-      res.locals.pokemon = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getPokemon',
-        message: {err: 'Controller.getPokemon: Error'}
-      });
-    });
-};
-
-
-// get the name and link of the sound from Instruments
-Controller.getInstruments = (req, res, next) => {
-  const qString =  'SELECT instruments.name, instruments.link FROM instruments';
-
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
-      res.locals.instruments = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getInstruments',
-        message: {err: 'Controller.getInstruments: Error'}
-      });
-    });
-};
+//       //console.log(data.rows);
+//       res.locals.pokemon = data.rows;
+//       return next();
+//     })
+//     .catch(err => {
+//       console.log("ERROR!!!");
+//       return next({
+//         log: 'Error in Controller.getPokemon',
+//         message: {err: 'Controller.getPokemon: Error'}
+//       });
+//     });
+// };
 
 
-// get the name and link of the sound from Gaffes
-Controller.getGaffes = (req, res, next) => {
-  const qString =  'SELECT gaffes.name, gaffes.link FROM gaffes';
+// // get the name and link of the sound from Instruments
+// Controller.getInstruments = (req, res, next) => {
+//   const qString =  'SELECT instruments.name, instruments.link FROM instruments';
 
-  db.query(qString)
-    //grabbing characters from the DB
-    .then(data => {
-      // console.log(data.rows)
-      res.locals.gaffes = data.rows;
-      return next();
-    })
-    .catch(err => {
-      console.log("ERROR!!!");
-      return next({
-        log: 'Error in Controller.getGaffes',
-        message: {err: 'Controller.getGaffes: Error'}
-      });
-    });
-};
+//   db.query(qString)
+//     //grabbing characters from the DB
+//     .then(data => {
+//       res.locals.instruments = data.rows;
+//       return next();
+//     })
+//     .catch(err => {
+//       console.log("ERROR!!!");
+//       return next({
+//         log: 'Error in Controller.getInstruments',
+//         message: {err: 'Controller.getInstruments: Error'}
+//       });
+//     });
+// };
+
+
+// // get the name and link of the sound from Gaffes
+// Controller.getGaffes = (req, res, next) => {
+//   const qString =  'SELECT gaffes.name, gaffes.link FROM gaffes';
+
+//   db.query(qString)
+//     //grabbing characters from the DB
+//     .then(data => {
+//       // console.log(data.rows)
+//       res.locals.gaffes = data.rows;
+//       return next();
+//     })
+//     .catch(err => {
+//       console.log("ERROR!!!");
+//       return next({
+//         log: 'Error in Controller.getGaffes',
+//         message: {err: 'Controller.getGaffes: Error'}
+//       });
+//     });
+// };
 
 // get all the presets
 Controller.getPresets = (req, res, next) => {
@@ -155,10 +155,11 @@ Controller.savePrimary = (req, res, next) => {
   //unable to do multiple queries at the same time so I need to create
   //the primary key in the preset table for better username usage
   const testing = req.body.newPreset
+  console.log('FOR TESTING JENNIFER', testing)
   // why these index positions
   // index 0 is preset name
   // index 14 is username
-  const names = [testing[0], testing[14]]
+  const names = [testing[0], testing[13]]
   let qString = "Insert INTO presets (name, username) Values ($1, $2)";
   db.query(qString, names)
     .then(() => {
