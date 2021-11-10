@@ -207,6 +207,7 @@ Controller.login = (req, res, next) => {
   db.query(qString, [username, hash])
     .then((data) => {
       // did we grab the users presets? where do we return them?
+      console.log('login response data', data);
       res.locals.loginStatus = true;
       return next();
     })
@@ -219,16 +220,32 @@ Controller.login = (req, res, next) => {
     });
 };
 
-// have we seen this work?
-// seems solid
+
+Controller.verifyUser = (req, res, next) => {
+  const { username } = req.body.allInfo;
+  let verifyAvailable = "select * from users Where name = $1";
+  db.query(verifyAvailable, [username])
+  .then(response => {
+    if (response.rows[0] !== undefined) throw 'Username is already taken!'
+    else return next();
+  })
+  .catch(err => {
+    console.log('error');
+    return next({
+      log: 'Error in Controller.signup',
+      message: {err: `${err.message}`}
+    });
+  });
+}
+
 Controller.signup = (req, res, next) => {
   console.log('this is the post request body', req.body.allInfo);
   const { username, password } = req.body.allInfo;
-  console.log(req.body.allInfo);
   let qString =  "Insert INTO users (name, password) Values ($1, $2);" //inserting username, pw, preset options
   const hash = bcrypt.hashSync(password, 2);
   db.query(qString, [username, hash])
-    .then(() => {
+    .then((response) => {
+      console.log('promise response', response.rows);
       return next();
     })
     .catch(err => {

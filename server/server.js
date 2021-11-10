@@ -39,7 +39,7 @@ app.post('/login', Controller.login, Controller.getALL, (req, res) => {
   return res.status(200).json(res.locals.all);
 });
 
-app.post('/signup', Controller.signup, (req, res) => {
+app.post('/signup', Controller.verifyUser, Controller.signup, (req, res) => {
   console.log('signed up new user');
   return res.sendStatus(200);
 });
