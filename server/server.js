@@ -24,10 +24,10 @@ app.get('/', (req, res) => {
 // });
 
 // what does this one do? are we sure it's a post request -- refactor to get, maybe.
-// app.post('/all', Controller.getALL, (req, res)=> {
-//   console.log('trying to create the same formatting as manually doing it')
-//   return res.status(200).json(res.locals.all)
-// })
+app.post('/all', Controller.getALL, (req, res)=> {
+  console.log('trying to create the same formatting as manually doing it')
+  return res.status(200).json(res.locals.all)
+})
 
 app.post('/savePreset', Controller.savePrimary, Controller.savePreset, Controller.getALL, (req, res) => {
   console.log('sent preset to db');
