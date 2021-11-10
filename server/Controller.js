@@ -225,19 +225,13 @@ Controller.login = (req, res, next) => {
   // const hash = bcrypt.hashSync(password, 2);
   // console.log(hash);
   db.query(qString, [username])
-    .then((data) => {
-      console.log('login response data', data);
-      const hash = data.rows[0].password;
-      bcrypt.compare(password, hash, (err, isMatch) => {
-        if (err) throw err;
-        else {
-          if (!isMatch) throw 'Password was incorrect';
-          else {
-            res.locals.loginStatus = true;
-            return next();
-          }
-        }
-      })
+    .then(async (data) => {
+      const hash = await data.rows[0].password;
+      const eval = await bcrypt.compare(password, hash);
+      if (eval) {
+        res.locals.loginStatus = true;
+        return next();
+      } else throw 'Password is incorrect';
     })
     .catch(err => {
       console.log(err.message);
@@ -267,33 +261,23 @@ Controller.verifyUser = (req, res, next) => {
   });
 }
 
-Controller.signup = (req, res, next) => {
+Controller.signup = async (req, res, next) => {
   console.log('this is the post request body', req.body.allInfo);
   const { username, password } = req.body.allInfo;
   let qString =  "Insert INTO users (name, password) Values ($1, $2);" //inserting username, pw, preset options
-  let hash;
-  bcrypt.genSalt(2, (err, salt) => {
-    if (err) throw err;
-    else bcrypt.hash(password, salt, (err, res) => {
-      if (err) throw err;
-      else {
-        db.query(qString, [username, res])
-          .then((response) => {
-            console.log('promise response', response);
-            return next();
-          })
-          .catch(err => {
-            console.log(err.message);
-            return next({
-              log: 'Error in Controller.signup',
-              message: {err: 'Controller.signup: Error'}
-            });
-         });
-      }
-    })
+  let hash = await bcrypt.hash(password, 10);
+  db.query(qString, [username, hash])
+  .then((response) => {
+    console.log('promise response', response);
+    return next();
   })
-  
-  
+  .catch(err => {
+    console.log(err.message);
+    return next({
+      log: 'Error in Controller.signup',
+      message: {err: 'Controller.signup: Error'}
+    });
+ });  
 };
 
 
