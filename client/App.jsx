@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
-// import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import Board from './components/Board.jsx'; // Draws the entire board and passes down props containing each sound link
 import Preset_Selector from './components/Preset_Selector.jsx'; // Generates preset list above soundboard buttons 
-import Login from './components/Login.jsx';
 import Customizer from './components/Customizer.jsx';
-import Board from './components/Board.jsx';
-import Preset_Selector from './components/Preset_Selector.jsx';
-import Customizer from './components/Customizer.jsx'
+
 
 import './stylesheets/styles.scss';
 
