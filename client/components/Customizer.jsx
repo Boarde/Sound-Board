@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 const Customizer = (props) => {
   const soundList = props.allSounds;
+  const currentSounds = [];
   const currPL = props.currPL;
   const [newPreset, setNewPreset] = useState([]);
   const [presetName, setPresetName] = useState('');
@@ -17,17 +18,14 @@ const Customizer = (props) => {
 
   let databaseEntry = '';
 
-  const currentSounds = [];
   const soundsArray = () => {
     Object.keys(soundList).forEach(element => {
       for (let i = 0; i < soundList[element].length; i++) {
         if (!currentSounds.includes(soundList[element][i].name)) {
           currentSounds.push(soundList[element][i].name);
-
         }
       }
-    }
-    );
+    });
   };
 
   soundsArray();
