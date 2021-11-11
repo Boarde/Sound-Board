@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SoundButton from './SoundButton.jsx';
 
+
 const Board = (props) => {
   const preset = props.preset;
   // default sounds to populate board when user does not have an account or is not logged in
@@ -16,7 +17,8 @@ const Board = (props) => {
     {link: 'https://www.pokezorworld.com/anime/wav/machoke.wav' },
     {link: 'https://www.imit.org.uk/sound-clips/Organ.mp3' },
     {link: 'https://www.pokezorworld.com/anime/wav/bulbasaur.wav' },
-    {link: 'https://www.pokezorworld.com/anime/wav/meowth.wav' }
+    {link: 'https://www.pokezorworld.com/anime/wav/meowth.wav' },
+    
   ];
 
   // rendering entire board
@@ -24,7 +26,7 @@ const Board = (props) => {
     <div className="soundboard">
       {sounds.map((el, i) => <SoundButton id={i} key={i} sound={ sounds[i].link } />)}
     </div>
-  );
-};
+  )
+}
 
 export default Board;
