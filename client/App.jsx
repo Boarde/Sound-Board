@@ -17,7 +17,7 @@ function App() {
   // conditional for showing login form
   const [showLogin, setShowLogin] = useState(false);
   // Saving username and password in States
-  const [currUser, setCurrUser] = useState(null);
+  const [currUser, setCurrUser] = useState('');
   const [password, setPassword] = useState('');
   const [loginStatus, setStatus] = useState(false);
   const [currPL, setPL] = useState([]);
@@ -104,7 +104,7 @@ function App() {
       {showLogin && loginForm}
 
       {/* if wrong username/password combination */}
-      {loginFailed && <center><div style={{color:'red'}}>Wrong Username and Password combination - Please try again</div></center>}
+      {loginFailed && <center><div style={{color:'red'}}>Wrong Username and Password <br/>combination - Please try again</div><br/><br/></center>}
 
       {/* displays gear for the settings when logged in */}
       {loginStatus && <button className="presetSettings" onClick={() => setMenuStatus(!menuStatus)}></button>}
