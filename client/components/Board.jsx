@@ -64,7 +64,7 @@ const Board = (props) => {
   const renderBoard = () => {
     const buttonArray = [];
     const kbKeys = ['q', 'w', 'e', 'r', 'a', 's', 'd', 'f', 'z', 'x', 'c', 'v'];
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 12 && i < sounds.length; i++) {
       buttonArray.push(<SoundButton id={`button${kbKeys[i]}`} key={i} sound={sounds[i].link} keyLink={kbKeys[i]} />);
     }
     return buttonArray;
