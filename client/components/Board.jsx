@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SoundButton from './SoundButton.jsx';
 
-
 const Board = (props) => {
   const preset = props.preset;
   // default sounds to populate board when user does not have an account or is not logged in
@@ -18,15 +17,44 @@ const Board = (props) => {
     {link: 'https://www.imit.org.uk/sound-clips/Organ.mp3' },
     {link: 'https://www.pokezorworld.com/anime/wav/bulbasaur.wav' },
     {link: 'https://www.pokezorworld.com/anime/wav/meowth.wav' },
-    
   ];
+
+  document.addEventListener('keydown', playSound);
+  function playSound(e) {
+    const key = e.code.replace('Key', '').toLowerCase();
+    const btn = document.getElementById(`button${key}`);
+    btn.click();
+    btn.animate(
+      [
+        { borderRadius: `10%` },
+        { boxShadow: `inset 0 0 50px #fff, inset 20px 0 80px rgb(74, 253, 134),
+      inset -20px 0 80px #0ff, inset 20px 0 300px rgb(247, 3, 3),
+      inset -20px 0 300px #0ff, 0 0 20px #fff, -10px 0 40px #f0f, 10px 0 40px #0ff` },
+        { filter: `drop-shadow(0px 0px 5px rgb(134, 233, 225))` },
+      ],
+      {
+        duration: 200,
+        iteration: 1,
+      }
+    );
+  }
+
+  //render board and give each a property to activate upon keystroke
+  const renderBoard = () => {
+    const buttonArray = [];
+    const kbKeys = ['q','w','e','r','a','s','d','f','z','x','c','v'];
+    for (let i = 0; i < 12; i++){
+      buttonArray.push(<SoundButton id={`button${kbKeys[i]}`} key={i} sound={sounds[i].link} keyLink={kbKeys[i]}/>);
+    }
+    return buttonArray;
+  };
 
   // rendering entire board
   return (
     <div className="soundboard">
-      {sounds.map((el, i) => <SoundButton id={i} key={i} sound={ sounds[i].link } />)}
+      {renderBoard()}
     </div>
-  )
-}
+  );
+};
 
 export default Board;

@@ -92,8 +92,6 @@ function App() {
     setPL(allSounds[playlist].map(el => el.name));
   };
 
-
-
   return (
     //load user settings and render the board
     <div className="app-wrapper">
