@@ -175,32 +175,25 @@ Controller.login = (req, res, next) => {
   // const hash = bcrypt.hashSync(password, 2);
   // console.log(hash);
   db.query(qString, [username])
-
-    .then((data) => {
-      console.log('login response data', data);
-      const hash = data.rows[0].password;
-      bcrypt.compare(password, hash, (err, isMatch) => {
-        if (err) throw err;
-        else {
-          if (!isMatch) throw 'Password was incorrect';
-          else {
-            res.locals.loginStatus = true;
-            return next();
-          }
-        }
-      })
+    .then(async (data) => {
+      const hash = await data.rows[0].password;
+      const eval = await bcrypt.compare(password, hash);
+      if (eval) {
+        res.locals.loginStatus = true;
+        return next();
+      } else throw 'Password is incorrect';
     })
     .catch(err => {
       console.log(err.message);
       return next({
         log: 'Error in Controller.getGaffes',
-        message: { err: 'Controller.getGaffes: Error' }
+        message: {err: 'Controller.getGaffes: Error'}
       });
     });
 };
 
 
-Controller.verifyUser = ((req, res, next) => {
+Controller.verifyUser = (req, res, next) => {
   const { username } = req.body.allInfo;
   let verifyAvailable = "select * from users Where name = $1";
   db.query(verifyAvailable, [username])
@@ -215,19 +208,26 @@ Controller.verifyUser = ((req, res, next) => {
       log: 'Error in Controller.signup',
       message: {err: `${err.message}`}
     });
-});
-})
+  });
+}
 
 Controller.signup = async (req, res, next) => {
   console.log('this is the post request body', req.body.allInfo);
   const { username, password } = req.body.allInfo;
-  let qString =  "Insert INTO users (name, password) Values ($1, $2);" //inserting username, pw, preset options
+  let qString =  "Insert INTO users (name, password) Values ($1, $2);" 
   let hash = await bcrypt.hash(password, 10);
   db.query(qString, [username, hash])
   .then((response) => {
     console.log('promise response', response);
     return next();
   })
+  .catch(err => {
+    console.log(err.message);
+    return next({
+      log: 'Error in Controller.signup',
+      message: {err: 'Controller.signup: Error'}
+    });
+ });  
 };
 
 module.exports = Controller;
