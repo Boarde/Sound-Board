@@ -1,4 +1,5 @@
 const db = require('./database.js');
+var bcrypt = require('bcryptjs');
 
 const Controller = {};
 

@@ -1,12 +1,11 @@
-import { connection } from 'mongoose';
 import React, { useState, useEffect } from 'react';
 
 const Customizer = (props) => {
   const soundList = props.allSounds;
-  const loginStatus = props.loginStatus;
+  const currentSounds = [];
+  const currPL = props.currPL;
   const [newPreset, setNewPreset] = useState([]);
   const [presetName, setPresetName] = useState('');
-  const [temp, setTemp] = useState([]);
 
   useEffect(() => {
     const defaultPreset = [];
@@ -18,17 +17,14 @@ const Customizer = (props) => {
 
   let databaseEntry = '';
 
-  const currentSounds = [];
   const soundsArray = () => {
     Object.keys(soundList).forEach(element => {
       for (let i = 0; i < soundList[element].length; i++) {
         if (!currentSounds.includes(soundList[element][i].name)) {
           currentSounds.push(soundList[element][i].name);
-
         }
       }
-    }
-    );
+    });
   };
 
   soundsArray();
@@ -46,9 +42,6 @@ const Customizer = (props) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ newPreset: [presetName, ...Object.values(newPreset), props.currUser/*, username */] })
-      //body has to be in this format { newPreset : ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy', USERNAME];
-
-      // }
     })
       .then(res => res.json())
       .then (data => {
@@ -60,28 +53,21 @@ const Customizer = (props) => {
         console.log('ERROR CREATING NEW PRESET');
         return err;
       });
-
   };
 
-  //
-  function setPlaylist(i, e) {
+  // populates souundboard buttons with links of corresponding playlist
+  const setPlaylist = (i, e) => {
     const selectedPreset = JSON.parse(JSON.stringify(newPreset));
     selectedPreset[i] = e.target.value;
     setNewPreset(selectedPreset);
-  }
+  };
 
-  /***** PROBLEM AREA ******/
-  // if(loginStatus) {
-  //   setTemp(soundList[Object.keys(soundList)[0]]);
-  //   console.log(temp[0].name);
-  // }
-    
-  //preset dropdown
+  // populates each drop down with a dropdown list of all the options
   const presetOptions = [];
   for (let i = 0; i < 12; i++) {
     presetOptions.push(
       <div className="customizer-dropdown-wrapper">
-        {loginStatus && <div style={{color:'white'}}>test</div>}
+        <div style={{color:'white'}}>{currPL[i]}</div>
         <select onChange={e => setPlaylist(i, e)} id={`${i}dropdown`} name="soundClips">
           {currentSounds.map((element, i) => (<option key={`${i}`} value={element}> {element} </option>))}
         </select>
@@ -96,7 +82,7 @@ const Customizer = (props) => {
         addPreset();
       }}>
         <div className="preset-form">
-          <label htmlFor="preset-name" style={{ color: 'white' }} >Preset Name:     </label>
+          <label htmlFor="preset-name" style={{ color: 'white' }} >Preset Name: </label>
           <input onChange={(e) => setPresetName(e.target.value)} id="preset-name" type="text" required></input>
           <input type="submit"></input>
         </div>
