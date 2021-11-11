@@ -9,7 +9,7 @@ const Playlist_Selector = (props) => {
   // renders the drop downlist
   return (
     <div className="settings-wrapper" >
-      <select onChange={e => props.setPreset(e.target.value)}>
+      <select onChange={e => {props.setPreset(e.target.value); props.selectedPL(e.target.value)}}>
         {options}
       </select>
     </div>
