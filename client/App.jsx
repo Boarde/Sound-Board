@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Board from './components/Board.jsx';
 import Playlist_Selector from './components/Playlist_Selector.jsx';
-import Customizer from './components/Customizer.jsx'
+import Customizer from './components/Customizer.jsx';
 
 import './stylesheets/styles.scss';
-
 
 function App() {
   // holds all the sounds in a playlist
@@ -18,9 +17,11 @@ function App() {
   // conditional for showing login form
   const [showLogin, setShowLogin] = useState(false);
   // Saving username and password in States
-  const [currUser, setCurrUser] = useState(null);
+  const [currUser, setCurrUser] = useState('');
   const [password, setPassword] = useState('');
   const [loginStatus, setStatus] = useState(false);
+  const [currPL, setPL] = useState([]);
+  const [loginFailed, setLoginErr] = useState(false);
 
   // account settings - sign up, log in, log out
   const postSignUp = () => {
@@ -54,9 +55,12 @@ function App() {
         setAllSounds(data);
         setShowLogin(false);
         setStatus(true);
+        setLoginErr(false);
         setPlaylists(Object.keys(data));
+        setPL(data[(Object.keys(data)[0])].map(el => el.name));
       })
       .catch(err => {
+        setLoginErr(true);
         console.log('Error logging in user', err);
       });
   };
@@ -83,7 +87,10 @@ function App() {
       </form>
     </div>;
 
-
+  const selectedPL = (playlist) => {
+    console.log(allSounds[playlist].map(el => el.name));
+    setPL(allSounds[playlist].map(el => el.name));
+  };
 
   return (
     //load user settings and render the board
@@ -94,18 +101,21 @@ function App() {
       {/* displays login form when button is pressed*/}
       {showLogin && loginForm}
 
+      {/* if wrong username/password combination */}
+      {loginFailed && <center><div style={{color:'red'}}>Wrong Username and Password <br/>combination - Please try again</div><br/><br/></center>}
+
       {/* displays gear for the settings when logged in */}
       {loginStatus && <button className="presetSettings" onClick={() => setMenuStatus(!menuStatus)}></button>}
-      
+
       {/* displays customizer page when button is pressed */}
-      {menuStatus && <Customizer currUser={currUser} setMenuStatus={setMenuStatus} allSounds={allSounds} setAllSounds={setAllSounds} setPlaylists={setPlaylists}/>}
+      {loginStatus && menuStatus && <Customizer currPL={currPL} currUser={currUser} setMenuStatus={setMenuStatus} allSounds={allSounds} setAllSounds={setAllSounds} setPlaylists={setPlaylists} />}
 
       {/* displays playlist slector when logged in */}
-      {loginStatus && <Playlist_Selector playlists={playlists} setPreset={setPreset} />}
-      
+      {loginStatus && <Playlist_Selector selectedPL={selectedPL} playlists={playlists} setPreset={setPreset} />}
+
       {/* most important item - the sound board */}
       {menuStatus || <Board preset={preset} allSounds={allSounds} />}
-      
+
       {/* displays logout icon when logged in */}
       {loginStatus && <button id="logout-button" onClick={logOut}></button>}
     </div>
