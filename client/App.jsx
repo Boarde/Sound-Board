@@ -91,11 +91,8 @@ function App() {
     console.log(allSounds[playlist].map(el => el.name));
     setPL(allSounds[playlist].map(el => el.name));
   };
-<<<<<<< HEAD
-=======
 
 
->>>>>>> upstream/dev
 
   return (
     //load user settings and render the board
@@ -107,11 +104,7 @@ function App() {
       {showLogin && loginForm}
 
       {/* if wrong username/password combination */}
-<<<<<<< HEAD
-      {loginFailed && <center><div style={{color:'red'}}>Wrong Username and Password <br/>combination - Please try again</div><br/><br/></center>}
-=======
       {loginFailed && <center><div style={{color:'red'}}>Wrong Username and Password combination - Please try again</div></center>}
->>>>>>> upstream/dev
 
       {/* displays gear for the settings when logged in */}
       {loginStatus && <button className="presetSettings" onClick={() => setMenuStatus(!menuStatus)}></button>}
