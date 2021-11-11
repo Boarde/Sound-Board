@@ -9,7 +9,6 @@ Controller.getALL = (req, res, next) => {
   function formatData(SQL) {
     const obj = {}
     SQL.forEach((element) => {
-      //Does Element have both a .name and .names property? what is the difference?
       obj[element.name] = []
       const nameArray = element.names.split('#')
       const linkArray = element.links.split('#')
@@ -18,10 +17,9 @@ Controller.getALL = (req, res, next) => {
         const nameLink = {}
         nameLink.name = nameArray[i]
         nameLink.link = linkArray[i]
-        // { name: 'pikachu', link: 'pikachu.wav'}
         arrayObj.push(nameLink)
       }
-      obj[element.name] = arrayObj // obj[element.name] = [{ name: 'pikachu', link: 'pikachu.wav'},{ name: 'pikachu', link: 'pikachu.wav'},...]
+      obj[element.name] = arrayObj;
     })
     return obj;
     //one object with all users presets
@@ -34,7 +32,6 @@ Controller.getALL = (req, res, next) => {
   else username = [req.body.newPreset[13]]
   console.log('is the req.body showing', req.body.newPreset);
   console.log('this is the username in an array-------->', username)
-  // what does this query do
   let qString = "select presets.name, STRING_AGG(presetsongs.sound, '#') AS names, STRING_AGG(soundLinks.link, '#') AS links from presets Join presetsongs ON presets.name = presetsongs.presetName Join soundlinks ON presetsongs.sound = soundLinks.sound WHERE presetsongs.username = $1 OR presetsongs.username IS NULL Group BY presets.name"
   console.log('trying to get all with the parse')
   db.query(qString, username)
@@ -53,7 +50,6 @@ Controller.getALL = (req, res, next) => {
     })
 }
 
-// what exactly does this do -- what greater purpose does it serve?
 Controller.savePrimary = (req, res, next) => {
   //unable to do multiple queries at the same time so I need to create
   //the primary key in the preset table for better username usage
@@ -179,32 +175,25 @@ Controller.login = (req, res, next) => {
   // const hash = bcrypt.hashSync(password, 2);
   // console.log(hash);
   db.query(qString, [username])
-
-    .then((data) => {
-      console.log('login response data', data);
-      const hash = data.rows[0].password;
-      bcrypt.compare(password, hash, (err, isMatch) => {
-        if (err) throw err;
-        else {
-          if (!isMatch) throw 'Password was incorrect';
-          else {
-            res.locals.loginStatus = true;
-            return next();
-          }
-        }
-      })
+    .then(async (data) => {
+      const hash = await data.rows[0].password;
+      const eval = await bcrypt.compare(password, hash);
+      if (eval) {
+        res.locals.loginStatus = true;
+        return next();
+      } else throw 'Password is incorrect';
     })
     .catch(err => {
       console.log(err.message);
       return next({
         log: 'Error in Controller.getGaffes',
-        message: { err: 'Controller.getGaffes: Error' }
+        message: {err: 'Controller.getGaffes: Error'}
       });
     });
 };
 
 
-Controller.verifyUser = ((req, res, next) => {
+Controller.verifyUser = (req, res, next) => {
   const { username } = req.body.allInfo;
   let verifyAvailable = "select * from users Where name = $1";
   db.query(verifyAvailable, [username])
@@ -219,34 +208,26 @@ Controller.verifyUser = ((req, res, next) => {
       log: 'Error in Controller.signup',
       message: {err: `${err.message}`}
     });
-});
-})
+  });
+}
 
-Controller.signup = (req, res, next) => {
+Controller.signup = async (req, res, next) => {
   console.log('this is the post request body', req.body.allInfo);
   const { username, password } = req.body.allInfo;
-  let qString =  "Insert INTO users (name, password) Values ($1, $2);" //inserting username, pw, preset options
-  let hash;
-  bcrypt.genSalt(2, (err, salt) => {
-    if (err) throw err;
-    else bcrypt.hash(password, salt, (err, res) => {
-      if (err) throw err;
-      else {
-        db.query(qString, [username, res])
-          .then((response) => {
-            console.log('promise response', response);
-            return next();
-          })
-          .catch(err => {
-            console.log(err.message);
-            return next({
-              log: 'Error in Controller.signup',
-              message: {err: 'Controller.signup: Error'}
-            });
-         });
-      }
-    })
+  let qString =  "Insert INTO users (name, password) Values ($1, $2);" 
+  let hash = await bcrypt.hash(password, 10);
+  db.query(qString, [username, hash])
+  .then((response) => {
+    console.log('promise response', response);
+    return next();
   })
+  .catch(err => {
+    console.log(err.message);
+    return next({
+      log: 'Error in Controller.signup',
+      message: {err: 'Controller.signup: Error'}
+    });
+ });  
 };
 
 module.exports = Controller;

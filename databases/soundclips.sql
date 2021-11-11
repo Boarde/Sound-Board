@@ -71,8 +71,8 @@ CREATE TABLE public.presetSongs (
 
 
 CREATE TABLE public.soundlinks (
- 	"sound" varchar NOT NULL,
-	"link" varchar NOT NULL
+ 	sound varchar NOT NULL,
+	link varchar NOT NULL
 )
 
 -- INSERT INTO public.pokemon Values (1, 'pikachu', 'https://www.pokezorworld.com/anime/wav/pikach.wav');
@@ -220,6 +220,9 @@ Insert INTO public.presetSongs Values ('custom1', 'machoke');
 
 ALTER TABLE presetsongs
 ADD username varchar;
+
+ALTER TABLE presetsongs
+ADD index bigint;
 
 ALTER TABLE presets
 ADD username varchar;
