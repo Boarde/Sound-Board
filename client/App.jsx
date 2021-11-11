@@ -21,6 +21,7 @@ function App() {
   const [password, setPassword] = useState('');
   const [loginStatus, setStatus] = useState(false);
   const [currPL, setPL] = useState([]);
+  const [loginFailed, setLoginErr] = useState(false);
 
   // account settings - sign up, log in, log out
   const postSignUp = () => {
@@ -54,10 +55,12 @@ function App() {
         setAllSounds(data);
         setShowLogin(false);
         setStatus(true);
+        setLoginErr(false);
         setPlaylists(Object.keys(data));
         setPL(data[(Object.keys(data)[0])].map(el => el.name));
       })
       .catch(err => {
+        setLoginErr(true);
         console.log('Error logging in user', err);
       });
   };
@@ -99,6 +102,9 @@ function App() {
 
       {/* displays login form when button is pressed*/}
       {showLogin && loginForm}
+
+      {/* if wrong username/password combination */}
+      {loginFailed && <center><div style={{color:'red'}}>Wrong Username and Password combination - Please try again</div></center>}
 
       {/* displays gear for the settings when logged in */}
       {loginStatus && <button className="presetSettings" onClick={() => setMenuStatus(!menuStatus)}></button>}

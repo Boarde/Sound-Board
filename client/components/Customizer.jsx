@@ -1,4 +1,3 @@
-import { connection } from 'mongoose';
 import React, { useState, useEffect } from 'react';
 
 const Customizer = (props) => {
@@ -43,9 +42,6 @@ const Customizer = (props) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ newPreset: [presetName, ...Object.values(newPreset), props.currUser/*, username */] })
-      //body has to be in this format { newPreset : ['Connor','charmander','whip','two_hours_later','xylophone','marimba','zither','gta','what_are_those','recorder','vulpix','fbi','ash_boogy', USERNAME];
-
-      // }
     })
       .then(res => res.json())
       .then (data => {
@@ -57,17 +53,16 @@ const Customizer = (props) => {
         console.log('ERROR CREATING NEW PRESET');
         return err;
       });
-
   };
 
-  //
-  function setPlaylist(i, e) {
+  // populates souundboard buttons with links of corresponding playlist
+  const setPlaylist = (i, e) => {
     const selectedPreset = JSON.parse(JSON.stringify(newPreset));
     selectedPreset[i] = e.target.value;
     setNewPreset(selectedPreset);
-  }
+  };
 
-  //populates each drop down with a dropdown list of all the options
+  // populates each drop down with a dropdown list of all the options
   const presetOptions = [];
   for (let i = 0; i < 12; i++) {
     presetOptions.push(
